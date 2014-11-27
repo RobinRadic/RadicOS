@@ -1,0 +1,6 @@
+[Desktop Entry]
+Icon=text-plain
+Name=dolphinrc
+Type=Link
+URL[$e]=file://$HOME/.kde4/share/config/dolphinrc
+X-KDE-LastOpenedWith=kate

@@ -1,0 +1,13 @@
++Prq:
+patterns-openSUSE-misc_server
+-Prq:
+
++Prc:
+yast2-nis-server
+openslp-server
+yast2-instserver
+yast2-iscsi-server
+yast2-nis-server
+yast2-slp-server
+-Prc:
+

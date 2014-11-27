@@ -1,0 +1,14 @@
++Prq:
+patterns-openSUSE-voip
+-Prq:
+
++Prc:
+ekiga
+-Prc:
+
++Psg:
+kiax
+linphone
+mangler
+twinkle
+-Psg:

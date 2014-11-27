@@ -1,0 +1,13 @@
++Prq:
+patterns-openSUSE-remote_desktop
+-Prq:
+
++Prc:
+rdesktop
+tsclient
+tightvnc
+-Prc:
++Psg:
+krfb
+krdc
+-Psg:

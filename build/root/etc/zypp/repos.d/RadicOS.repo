@@ -1,0 +1,8 @@
+[RadicOS]
+name=RadicOS
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/repositories/home:/radic:/RadicOS/openSUSE_13.1/
+path=/
+type=rpm-md
+keeppackages=0

@@ -1,0 +1,17 @@
+[ActiveShadows]
+Color=88,88,88
+ColorType=5
+Size=30
+
+[General]
+BorderSize=1
+CustomShadows=true
+InnerBorder=0
+OpaqueBorder=false
+OuterBorder=1
+
+[InactiveShadows]
+Color=110,110,110
+ColorType=5
+ShadowType=0
+Size=26

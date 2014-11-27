@@ -1,0 +1,23 @@
+#!/bin/bash
+
+inkscape --export-width=1920 \
+         --export-png=images/bg.png \
+         blank-background.svg
+
+objects="dev-workstation os radic tree"
+for object in $objects; do
+    inkscape  \
+             --export-id=$object \
+             --export-id-only \
+             --export-background-opacity=0.0 \
+             --export-png=images/${object}.png \
+             background.svg
+done
+
+
+#inkscape  \
+#         --export-id=tree \
+#         --export-id-only \
+#         --export-background-opacity=0.0 \
+#         --export-png=images/tree.png \
+#         background.svg

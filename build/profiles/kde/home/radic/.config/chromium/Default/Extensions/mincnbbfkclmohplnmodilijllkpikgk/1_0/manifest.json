@@ -1,0 +1,41 @@
+{
+   "description": "",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4K5AI0Q+Amqb7fH6pIvAYPZYFSFJmI2uIgwvhCEK9Y/Ji3Mk+KBXsT2FHLBmyLrKUDIw9DpunW9pryZcAmo40gvCLY2vW3s0dc44fIb3gWa0rDUiFY2x8T0aPrfU7VO4o0lOPywWdu/FWtNc+Q0NrqRVRgGKL9MLZKo5P/r4upFbpk7RtRwX/1MM9KDF+n4jdR7CoDULELSxD5FHZA6QDYu8YvDSRoWT7KoINDZ0aTm9p1JL5cvTie9LBH7nVxDCGdD+zbrlCmQ6HeCJ3ptCcEodzY5Fs9xYOrwPlK6UMB56+BVlpM0NYhi/QQMakx2ScefYa2Gq29LXGr4qEqXGJQIDAQAB",
+   "manifest_version": 2,
+   "name": "Evolvere",
+   "theme": {
+      "colors": {
+         "bookmark_text": [ 67, 74, 84 ],
+         "button_background": [ 0, 0, 0, 0 ],
+         "frame": [ 205, 207, 216 ],
+         "frame_incactive": [ 205, 207, 216 ],
+         "frame_incognito": [ 205, 207, 216 ],
+         "frame_incognito_incactive": [ 205, 207, 216 ],
+         "ntp_background": [ 205, 207, 216 ],
+         "ntp_text": [ 67, 74, 84 ],
+         "tab_background_text": [ 67, 74, 84 ],
+         "tab_text": [ 67, 74, 84 ],
+         "toolbar": [ 205, 207, 216 ]
+      },
+      "images": {
+         "theme_button_background": "images/theme_toolbar.png",
+         "theme_frame": "images/theme_frame.png",
+         "theme_frame_incactive": "images/theme_frame.png",
+         "theme_frame_incognito": "images/theme_frame.png",
+         "theme_tab_background": "images/theme_tab_background.png",
+         "theme_toolbar": "images/theme_toolbar.png"
+      },
+      "properties": {
+         "ntp_background_alignment": "bottom",
+         "ntp_background_repeat": "no-repeat"
+      },
+      "tints": {
+         "background_tab": [ 0.619, 0.55, 0.43 ],
+         "buttons": [ 0.596, 0.55, 0.55 ],
+         "frame_inactive": [ 0.619, 0.5, 0.5 ],
+         "frame_incognito": [ 0.619, 0.5, 0.5 ],
+         "frame_incognito_inactive": [ 0.619, 0.5, 0.5 ]
+      }
+   },
+   "version": "1"
+}

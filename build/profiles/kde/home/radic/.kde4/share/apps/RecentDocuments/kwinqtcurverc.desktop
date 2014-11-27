@@ -1,0 +1,6 @@
+[Desktop Entry]
+Icon=text-plain
+Name=kwinqtcurverc
+Type=Link
+URL[$e]=file://$HOME/.kde4/share/config/kwinqtcurverc
+X-KDE-LastOpenedWith=kate

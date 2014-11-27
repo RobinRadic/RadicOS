@@ -1,0 +1,29 @@
+#!/bin/bash
+
+rootdir=$PWD
+
+create_tmpcd() {
+    cd $rootdir/installer
+    makeSUSEdvd -i
+}
+
+bootstrap-phing() {
+    cd $rootdir/tools
+    wget http://www.phing.info/get/phing-latest.phar
+}
+
+bootstrap-installer() {
+    mkdir -p $rootdir/installer/{original-iso,tmpcd,data}
+    mkdir -p
+}
+
+radicos-packages() {
+    archs="x86_64 noarch"
+    for arch in $archs; do
+        while read p; do
+          echo $p
+          wget http://download.opensuse.org/repositories/home:/radic:/RadicOS/openSUSE_13.1/${arch}/$p
+          mv -f $p data/suse/${arch}/$p
+        done <dlpkg_${arch}
+    done
+}

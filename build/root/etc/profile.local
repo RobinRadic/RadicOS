@@ -1,0 +1,41 @@
+
+setup_profile_prompt() {
+	local off="\[\e[0m\]"
+	local bold="\[\e[1m\]"
+	local yellow="\[\e[93m]"
+	local black="\[\e[30m\]"
+	local red="\[\e[31m\]"
+	local green="\[\e[32m\]"
+	local white="\[\e[37m\]"
+	local light_yellow="\[\e[33m\]"
+
+	local bg_black="\[\e[40m\]"
+	local bg_red="\[\e[41m\]"
+	local bg_green="\[\e[42m\]"
+	local bg_yellow="\[\e[43m\]"
+	local bg_grey="\[\e[47m\]"
+	local bg_lightblue="\[\e[44m\]"
+
+	# \u  \H \w
+	export PS1="${off}${bg_grey}${red} \A \
+${off}${green}${bg_lightblue} \u \
+${off}${bg_grey}${red} \H \
+${off}${bg_black}${green} \w ${bg_black}\
+\n\
+${bg_black}${red}${bold} \$ ${bg_black} ${white}"
+}
+setup_profile_prompt
+
+up(){
+  local d=""
+  limit=$1
+  for ((i=1 ; i <= limit ; i++))
+    do
+      d=$d/..
+    done
+  d=$(echo $d | sed 's/^\///')
+  if [ -z "$d" ]; then
+    d=..
+  fi
+  cd $d
+}

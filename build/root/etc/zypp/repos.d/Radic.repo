@@ -1,0 +1,8 @@
+[Radic]
+name=Radic
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/repositories/home:/radic/openSUSE_13.1/
+path=/
+type=rpm-md
+keeppackages=0

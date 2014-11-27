@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=RadicOS 12.3 theme
+Description=RadicOS 12.3 Plymouth theme
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/RadicOS
+ScriptFile=/usr/share/plymouth/themes/RadicOS/RadicOS.script

@@ -1,0 +1,16 @@
++Prq:
+patterns-openSUSE-devel_rpm_build
+rpm-build
+man
+netcfg
+-Prq:
+
++Prc:
+libtool
+-Prc:
+
++Psg:
+build
+inst-source-utils
+libsolv-devel
+-Psg:

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Icon=text-plain
+Name=kservicemenurc
+Type=Link
+URL[$e]=file://$HOME/.kde4/share/config/kservicemenurc
+X-KDE-LastOpenedWith=kate

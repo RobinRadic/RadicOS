@@ -1,0 +1,6 @@
+[Desktop Entry]
+Icon=text-plain
+Name=systemsettingsrc
+Type=Link
+URL[$e]=file://$HOME/.kde4/share/config/systemsettingsrc
+X-KDE-LastOpenedWith=kate

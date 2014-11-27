@@ -1,0 +1,10 @@
+ab0cdb14595ce70d1bf6fcea588d320f  ./config.sh
+3e531a23c9dda40b5dafc5c295771742  ./root/repart
+6ddfadf33feb45e3ac74e5af8bee7a51  ./root/wmrc
+b5e25b5ef5bdf85a08d6dddd3222fe9b  ./root/preinit
+02dbb66ed3625f26ff06cae88d4b796a  ./root/dump
+0bd317294091339bf266673851c6730c  ./root/usr/share/fbiterm/fonts/8x16.pcf.gz
+8259e01bfe9c5acc03475db1df8ead6d  ./root/usr/share/fbiterm/fonts/b16.pcf.gz
+7c4453f9d0a00872ad7e26db9125004f  ./root/linuxrc
+cacc344a1c91ce826f1231728dde3762  ./images.sh
+eb99b40ea2faee0ff23e0592d17dcf37  ./config.xml

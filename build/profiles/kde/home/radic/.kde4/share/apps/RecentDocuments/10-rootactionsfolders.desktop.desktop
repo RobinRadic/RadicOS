@@ -1,0 +1,6 @@
+[Desktop Entry]
+Icon=application-x-desktop
+Name=10-rootactionsfolders.desktop
+Type=Link
+URL[$e]=file://$HOME/.kde4/share/services/ServiceMenus/10-rootactionsfolders.desktop
+X-KDE-LastOpenedWith=kate

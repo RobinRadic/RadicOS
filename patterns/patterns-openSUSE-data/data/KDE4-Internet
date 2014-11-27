@@ -1,0 +1,25 @@
++Prq:
+patterns-openSUSE-kde4_internet
+-Prq:
+
++Prc:
+kdnssd
+kget
+kopete
+// 297684 for these 2
+krfb
+krdc
+konversation
+ktorrent
+choqok
+// bnc#533580 
+NetworkManager-openvpn-kde4
+NetworkManager-vpnc-kde4
+NetworkManager-pptp-kde4
+-Prc:
++Psg:
+arora
+kppp
+knode
+rekonq
+-Psg:

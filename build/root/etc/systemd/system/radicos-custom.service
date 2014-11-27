@@ -1,0 +1,13 @@
+[Unit]
+Description=Execute user-provided boot script, if it exists
+ConditionFileIsExecutable=/radicos/radicos-boot-script
+
+# This line is required because by default the build script checks for
+# /etc/init.d/radicos_firstboot presence to detect the first boot. If this
+# service was run after radicos-firstboot.service, that file would be
+# deleted already.
+Before=radicos-firstboot.service
+
+[Service]
+Type=oneshot
+ExecStart=/radicos/radicos-boot-script

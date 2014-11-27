@@ -1,0 +1,8 @@
+[RadicMono]
+name=RadicMono
+enabled=1
+autorefresh=1
+baseurl=http://download.opensuse.org/repositories/home:/radic:/mono/openSUSE_13.1/
+path=/
+type=rpm-md
+keeppackages=0

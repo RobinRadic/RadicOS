@@ -1,0 +1,16 @@
++Prq:
+patterns-openSUSE-lxde_office
+-Prq:
+
++Prc:
+abiword
+mupdf
+gnumeric
+goffice
+-Prc:
+
++Psg:
+#if defined(__i386__) || defined (__x86_64__)
+libreoffice-gnome
+#endif
+-Psg:

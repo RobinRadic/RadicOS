@@ -1,0 +1,14 @@
++Prq:
+patterns-openSUSE-gnome_games
+-Prq:
+
++Prc:
+aisleriot
+gnome-games-recommended
+phalanx
+-Prc:
+
++Psg:
+gnome-games-extra-data
+gnuchess
+-Psg:

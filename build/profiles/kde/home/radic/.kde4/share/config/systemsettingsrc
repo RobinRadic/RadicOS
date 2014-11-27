@@ -1,0 +1,38 @@
+[Colors]
+CurrentPalette=* Custom Colors *
+
+[ConfigDialog]
+Height 1080=242
+Width 1920=464
+
+[DownloadDialog Settings]
+Height 1080=400
+Width 1920=700
+
+[HTML Settings]
+AutomaticDetectionLanguage=1
+
+[KFileDialog Settings]
+Height 1080=540
+Recent Files[$e]=Sol.qtcurve,$HOME/Sol-KDETheme/Color Scheme/Sol.colors,$HOME/Sol-KDETheme/QtCurve/Sol.qtcurve
+Recent URLs[$e]=$HOME/Sol-KDETheme/QtCurve/,$HOME/Sol-KDETheme/Color Scheme/
+Width 1920=960
+
+[Main]
+ActiveView=classic_mode
+
+[MainWindow]
+Height 1080=776
+Height 1200=582
+Height 600=524
+Height 874=582
+Height 978=582
+MenuBar=Disabled
+State=AAAA/wAAAAD9AAAAAAAAA9cAAAImAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAWAG0AYQBpAG4AVABvAG8AbABCAGEAcgEAAAAA/////wAAAAAAAAAA
+ToolBarsMovable=Disabled
+Width 1699=983
+Width 1920=983
+Width 800=796
+
+[classic_mode]
+viewLayout=466,940

@@ -1,0 +1,10 @@
+NAME=RadicOS
+VERSION="1.0 (Awesome)"
+VERSION_ID="1"
+PRETTY_NAME="RadicOS 1.0 (Awesome) (x86_64)"
+ID=opensuse
+ANSI_COLOR="0;32"
+CPE_NAME="cpe:/o:opensuse:opensuse:13.1"
+BUG_REPORT_URL="https://radic.nl"
+HOME_URL="https://radic.nl/"
+ID_LIKE="suse"

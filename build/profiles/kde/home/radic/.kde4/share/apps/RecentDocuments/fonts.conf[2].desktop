@@ -1,0 +1,6 @@
+[Desktop Entry]
+Icon=application-xml
+Name=fonts.conf
+Type=Link
+URL[$e]=file://$HOME/.config/fontconfig/fonts.conf
+X-KDE-LastOpenedWith=kate

@@ -1,0 +1,152 @@
+[AudioDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:11.0/0000:02:02.0/sound/card0/pcmC0D0c:capture]
+cardName=Ensoniq AudioPCI (ES1371 DAC2/ADC)
+deleted=false
+deviceNumber=0
+hotpluggable=false
+iconName=audio-card
+index=-13
+initialPreference=36
+isAdvanced=false
+
+[AudioDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:11.0/0000:02:02.0/sound/card0/pcmC0D0p:playback]
+cardName=Ensoniq AudioPCI (ES1371 DAC2/ADC)
+deleted=false
+deviceNumber=0
+hotpluggable=false
+iconName=audio-card
+index=-10
+initialPreference=36
+isAdvanced=false
+
+[AudioDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:11.0/0000:02:02.0/sound/card0/pcmC0D1p:playback]
+cardName=Ensoniq AudioPCI (ES1371 DAC1)
+deleted=false
+deviceNumber=1
+hotpluggable=false
+iconName=audio-card
+index=-11
+initialPreference=35
+isAdvanced=true
+
+[AudioDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:1b.0/sound/card0/pcmC0D0c:capture]
+cardName=HDA Intel PCH (ALC269VB Analog)
+deleted=true
+deviceNumber=0
+hotpluggable=false
+iconName=audio-card
+index=-7
+initialPreference=36
+isAdvanced=false
+
+[AudioDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:1b.0/sound/card0/pcmC0D0p:playback]
+cardName=HDA Intel PCH (ALC269VB Analog)
+deleted=true
+deviceNumber=0
+hotpluggable=false
+iconName=audio-card
+index=-1
+initialPreference=36
+isAdvanced=false
+
+[AudioDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:1b.0/sound/card0/pcmC0D1p:playback]
+cardName=HDA Intel PCH (ALC269VB Digital)
+deleted=true
+deviceNumber=1
+hotpluggable=false
+iconName=audio-card
+index=-2
+initialPreference=35
+isAdvanced=true
+
+[AudioDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:1b.0/sound/card0/pcmC0D3p:playback]
+cardName=HDA Intel PCH (HDMI 0)
+deleted=true
+deviceNumber=3
+hotpluggable=false
+iconName=audio-card
+index=-3
+initialPreference=33
+isAdvanced=true
+
+[AudioDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:1d.0/usb4/4-1/4-1.6/4-1.6:1.0/video4linux/video0]
+cardName=BisonCam, NB Pro
+deleted=false
+deviceNumber=-1
+hotpluggable=true
+iconName=camera-web
+index=-17
+initialPreference=50
+isAdvanced=false
+
+[AudioDevice_Ensoniq AudioPCI, ES1371 DAC2/ADC\nDefault Audio Device_capture]
+cardName=Ensoniq AudioPCI, ES1371 DAC2/ADC (Default Audio Device)
+deleted=false
+deviceNumber=-1
+hotpluggable=false
+iconName=audio-card
+index=-14
+initialPreference=30
+isAdvanced=false
+
+[AudioDevice_Ensoniq AudioPCI, ES1371 DAC2/ADC\nDefault Audio Device_playback]
+cardName=Ensoniq AudioPCI, ES1371 DAC2/ADC (Default Audio Device)
+deleted=false
+deviceNumber=-1
+hotpluggable=false
+iconName=audio-card
+index=-12
+initialPreference=30
+isAdvanced=false
+
+[AudioDevice_HDA Intel PCH, ALC269VB Analog\nDefault Audio Device_capture]
+cardName=HDA Intel PCH, ALC269VB Analog (Default Audio Device)
+deleted=true
+deviceNumber=-1
+hotpluggable=false
+iconName=audio-card
+index=-8
+initialPreference=30
+isAdvanced=false
+
+[AudioDevice_HDA Intel PCH, ALC269VB Analog\nDefault Audio Device_playback]
+cardName=HDA Intel PCH, ALC269VB Analog (Default Audio Device)
+deleted=true
+deviceNumber=-1
+hotpluggable=false
+iconName=audio-card
+index=-6
+initialPreference=30
+isAdvanced=false
+
+[AudioDevice_HDA Intel PCH, ALC269VB Digital\nIEC958 (S/PDIF) Digital Audio Output_playback]
+cardName=HDA Intel PCH, ALC269VB Digital (IEC958 (S/PDIF) Digital Audio Output)
+deleted=true
+deviceNumber=-1
+hotpluggable=false
+iconName=audio-card
+index=-4
+initialPreference=30
+isAdvanced=true
+
+[AudioDevice_HDA Intel PCH, HDMI 0\nHDMI Audio Output_playback]
+cardName=HDA Intel PCH, HDMI 0 (HDMI Audio Output)
+deleted=true
+deviceNumber=-1
+hotpluggable=false
+iconName=audio-card
+index=-5
+initialPreference=30
+isAdvanced=false
+
+[Globals]
+nextIndex=18
+
+[VideoDevice_/org/kde/solid/udev/sys/devices/pci0000:00/0000:00:1d.0/usb4/4-1/4-1.6/4-1.6:1.0/video4linux/video0]
+cardName=BisonCam, NB Pro
+deleted=false
+deviceNumber=-1
+hotpluggable=true
+iconName=camera-web
+index=-9
+initialPreference=50
+isAdvanced=false

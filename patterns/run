@@ -1,0 +1,150 @@
+#!/usr/bin/perl
+
+use strict;
+use solv;
+use Data::Dump;
+
+use Getopt::Long;
+my $exit_status;
+my %options;
+Getopt::Long::Configure("no_ignore_case");
+GetOptions (
+	\%options,
+	"lock=s@",
+	"explain=s",
+	"list",
+	"size",
+	"no-recommends",
+	"arch=s",
+	"packs=s@",
+	"repo=s@",
+) or die "invalid arguments\n";
+
+$options{'lock'} = [ split(/,/, join(',', @{$options{'lock'}})) ] if $options{'lock'};
+$options{'repo'} = [ split(/,/, join(',', @{$options{'repo'}})) ] if $options{'repo'};
+$options{'packs'} = [ split(/,/, join(',', @{$options{'packs'}})) ] if $options{'packs'};
+$options{'size'} = 1 unless ($options{'explain'} || $options{'list'});
+
+unless ($options{'arch'}) {
+	my $arch = 'x86_64';
+	warn "--arch not specified, assuming $arch\n";
+	$options{'arch'} = $arch;
+}
+
+my $pool = solv::Pool->new();
+#$pool->set_debuglevel(1);
+$pool->setarch ($options{'arch'});
+
+my %repos;
+for my $name (@{$options{'repo'}}) {
+	my $repo = $pool->add_repo($name);
+	$repo->add_solv ($name.'.solv');
+	$repos{$name} = $repo;
+}
+
+$pool->addfileprovides();
+# will segfault if you don't do that!
+$pool->createwhatprovides();
+
+# Create Solver
+my $solver = $pool->Solver();
+
+# Create Request
+#my $job = $pool->create_request();
+my @jobs;
+
+for my $p (@{$options{'packs'}}) {
+	my ($n, $r) = split(/@/, $p, 2);
+	my $sel = $pool->select($n, $solv::Selection::SELECTION_NAME);
+	$sel->filter($repos{$r}->Selection()) if $r;
+	die "can't find $p\n" if $sel->isempty();
+	my @jj = $sel->jobs($solv::Job::SOLVER_INSTALL);
+	for my $j (@jj) {
+		push @jobs, $j;
+	}
+}
+for my $p (@{$options{'lock'}}) {
+	my $sel = $pool->select($p, $solv::Selection::SELECTION_NAME);
+	my @jj = $sel->jobs($solv::Job::SOLVER_LOCK);
+	for my $j (@jj) {
+		push @jobs, $j;
+	}
+}
+
+# Solve the jobs
+$solver->set_flag($solv::Solver::SOLVER_FLAG_IGNORE_RECOMMENDED, 1) if $options{'no-recommends'};
+my @problems = $solver->solve(\@jobs);
+
+if (@problems) {
+	print "+++ PROBLEMS: +++\n";
+	for my $p (@problems) {
+		print $p->str, "\n";
+		for my $sol ($p->solutions) {
+			print "  + solution\n";
+			for my $elem ($sol->elements) {
+				print "    - ", $elem->str, "\n";
+			}
+		}
+	}
+	$exit_status = 1;
+}
+
+my $trans = $solver->transaction();
+
+sub sortbysize
+{
+	my $sa = $a->lookup_num($solv::SOLVABLE_INSTALLSIZE) || 0;
+	my $sb = $b->lookup_num($solv::SOLVABLE_INSTALLSIZE) || 0;
+	my $ret = $sa <=> $sb;
+	unless ($ret) {
+		$sa = $a->{"name"} || "";
+		$sb = $b->{"name"} || "";
+		$ret = $sa cmp $sb;
+	}
+	return $ret;
+}
+
+sub sortbyname
+{
+	my $sa = $a->{"name"} || "";
+	my $sb = $b->{"name"} || "";
+	$sa cmp $sb;
+}
+
+# Print packages to install
+my @a = $trans->newsolvables();
+
+if ($options{'explain'}) {
+	for my $s (@a) {
+		next unless $s->{'name'} eq $options{'explain'};
+		my ($type, $rule) = $solver->describe_decision($s);
+		dd $type, $rule->info()->problemstr();
+	}
+} elsif ($options{'list'}) {
+	for my $solvable (sort sortbyname @a) {
+		my $name = $solvable->{"name"};
+		printf "%s\n", $name;
+	}
+} elsif ($options{'size'}) {
+	for my $solvable (sort sortbysize @a) {
+		my $name = $solvable->{"name"};
+		my $arch = $solvable->{"arch"};
+		my $ver  = $solvable->{"evr"};
+		my $size = $solvable->lookup_num($solv::SOLVABLE_INSTALLSIZE) || 0;
+		printf "%8d %s\n", $size/1024, $name;
+	}
+}
+
+if ($options{'size'}) {
+	# get install size
+
+	my $size = $trans->calc_installsizechange();
+
+	printf "%8d %s\n", $size, "TOTAL";
+}
+
+# my $transaction = $solver->transaction();
+# my $sizechange = $transaction->sizechange();
+# print "SIZE CHANGE: $sizechange kB\n";
+
+exit($exit_status);

@@ -1,0 +1,140 @@
+{
+   "app_list": {
+      "app_launch_count": 0,
+      "last_app_launch_ping": "13053398400000000",
+      "last_launch_ping": "13053398400000000",
+      "launch_count": 0
+   },
+   "browser": {
+      "last_redirect_origin": ""
+   },
+   "data_reduction": {
+      "daily_original_length": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "175781236" ],
+      "daily_original_length_via_data_reduction_proxy": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+      "daily_original_length_with_data_reduction_proxy_enabled": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+      "daily_received_length": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "175781236" ],
+      "daily_received_length_https_with_data_reduction_proxy_enabled": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+      "daily_received_length_long_bypass_with_data_reduction_proxy_enabled": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+      "daily_received_length_short_bypass_with_data_reduction_proxy_enabled": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+      "daily_received_length_unknown_with_data_reduction_proxy_enabled": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+      "daily_received_length_via_data_reduction_proxy": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+      "daily_received_length_with_data_reduction_proxy_enabled": [ "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" ],
+      "last_update_date": "13053391200000000"
+   },
+   "gl_renderer_string": "Gallium 0.4 on llvmpipe (LLVM 3.3, 256 bits)",
+   "gl_vendor_string": "VMware, Inc.",
+   "gl_version_string": "2.1 Mesa 9.2.3",
+   "hardware_acceleration_mode_previous": true,
+   "http_original_content_length": "175781236",
+   "http_received_content_length": "175781236",
+   "local_state": {
+      "multiple_profile_prefs_version": 7
+   },
+   "ntp": {
+      "promo_resource_cache_update": "1408968327.142865"
+   },
+   "policy": {
+      "last_statistics_update": "13053441068685443"
+   },
+   "profile": {
+      "info_cache": {
+         "Default": {
+            "active_time": 1408977510.170557,
+            "avatar_icon": "chrome://theme/IDR_PROFILE_AVATAR_0",
+            "background_apps": false,
+            "is_ephemeral": false,
+            "is_omitted_from_profile_list": false,
+            "is_using_default_name": true,
+            "managed_user_id": "",
+            "name": "First user",
+            "user_name": ""
+         }
+      },
+      "last_active_profiles": [ "Default" ],
+      "last_used": "Default",
+      "preference_hashes": {
+         "/home/radic/.config/chromium/Default": {
+            "browser": {
+               "show_home_button": "9463DEC4C15E47646D05FD921E0E475249EA15DE77808C4664EF238C54D89FC7"
+            },
+            "default_search_provider": {
+               "keyword": "42142BFC0323D5EF138C9ED2128F1DEB2FD3E3F7AF30AD930F60A1C5B87E5276",
+               "name": "D29ED831358AACE7408781A9A65FA083D8CBA1662ED7E0356AEB94734C60D047",
+               "search_url": "D02C7D9E52A3893EB51633C2C0CA63BB6AC27B4E406A7C47D6A896AF4042FDDE"
+            },
+            "default_search_provider_data": {
+               "template_url_data": "575D258E47F940C6887685ABA99A5839CBFE4BA30863349DFE0D0C375AAB8816"
+            },
+            "extensions": {
+               "known_disabled": "6882E895E93409288B5C5FACE48643A3F0CE254F930EC3E666999E0E34B677F9",
+               "settings": {
+                  "ahfgeienlihckogmohjhadlkjgocpleb": "C66DBB39271BBA0BD7EDF8FB6658FD36ACDA2382D7685734340CDE662408D162",
+                  "eemcgdkfndhakfknompkggombfjjjeno": "A37B1AED041C70529D34A4B8C184535C2D43D0D7B46A9A8414874F52031C2C58",
+                  "ennkphjdgehloodpbhlhldgbnhmacadg": "EEE6FBBB6897A8267F34395204E00A5609A9B3136B3EC506DB0FC49393737240",
+                  "kmendfapggjehodndflmmgagdbamhnfd": "5BF1C7577874E5A327EB9D82C4C256E504585DB8EE6282DC1A8585520583B8B9",
+                  "mfehgcgbbipciphmccgaenjidiccnmng": "3306C8F8F34689828A03185ADEF4CB554ECCC66F0E961DBCBA6A5254B5EB3123",
+                  "mgndgikekgjfcpckkfioiadnlibdjbkf": "05BE99F4709A59D0E38DF5F867DE8C2441564EA8FA2CE0807F0C14562A64CFC2",
+                  "mincnbbfkclmohplnmodilijllkpikgk": "B87758BCB04BD3BDE6F3A3DFABD4A7261DDD0511422DDDC236A5763D58D34AF2",
+                  "nmmhkkegccagdldgiimedpiccmgmieda": "5E9A90BB94E98C9A86C848E18DB3F6CB274DA0E6ED8972F2B7FC9FB3FAD8C3FC",
+                  "pafkbggdmjlpgkdkcbjmhmfcdpncadgh": "375A858A6CD74643DED60165C83A5F5315DBE668996DF8AB5C2F469BE1471832"
+               }
+            },
+            "google": {
+               "services": {
+                  "last_username": "24FCEF9BF7DF12A2935BE143E58951E09DBAA1D3E0E24430C0FF93009F5D6AFD"
+               }
+            },
+            "homepage": "2BC9464527EF8CB0A11DBDF8B1FF713CD09806EE82DAF4B77F2EF839276B8560",
+            "homepage_is_newtabpage": "C77EA32F1872FF78A94FD3CF2AC2625671D07B6EC18468CE474F383FE0BAFEFA",
+            "pinned_tabs": "699F1AC92729A024B80605AFC3C63BFB2A35B70C4214581BBE108F851528E9E8",
+            "prefs": {
+               "preference_reset_time": "95C909F3D0669D5931907B455F099C510E7770D9F0BA6FF13E4C76101B44F757"
+            },
+            "profile": {
+               "reset_prompt_memento": "D4530CB53DD89D7863C8A6CB3762FD06DE5DBC9965D16D3A72FE1B19AD4A6C8F"
+            },
+            "search_provider_overrides": "1E1EBA3A4DC28A23BEFCF6ED5D71CE71E9814DD587A305F6B14F72E834AF75DD",
+            "session": {
+               "restore_on_startup": "AB59F1A9CB391932F7B6047BDBE08DCCB63050B3A912DE5B810DA12B56F5E9D2",
+               "startup_urls": "47838C9A38B62C5AB6C928C4E359CF92A856EB74B87417DE955465D3EA307E91"
+            }
+         },
+         "hash_of_hashes": {
+            "/home/radic/.config/chromium/Default": "E7D639B731525C915917CD6A7DA96AF10A739D32B6676A14B97F117996B82BB6"
+         },
+         "store_versions": {
+            "/home/radic/.config/chromium/Default": 2
+         }
+      }
+   },
+   "show-first-run-bubble-option": 0,
+   "shutdown": {
+      "num_processes": 0,
+      "num_processes_slow": 0,
+      "type": 0
+   },
+   "uninstall_metrics": {
+      "installation_date2": "1408967468",
+      "launch_count": "6"
+   },
+   "user_experience_metrics": {
+      "low_entropy_source2": 3878,
+      "session_id": 5,
+      "stability": {
+         "breakpad_registration_fail": 6,
+         "debugger_not_present": 6,
+         "execution_phase": 500,
+         "exited_cleanly": false,
+         "last_timestamp_sec": "1408978278",
+         "launch_count": 6,
+         "launch_time_sec": "1408971978",
+         "plugin_stats2": [  ],
+         "session_end_completed": true,
+         "stats_buildtime": "1406527113",
+         "stats_version": "36.0.1985.125-64-devel"
+      }
+   },
+   "was": {
+      "restarted": false
+   }
+}

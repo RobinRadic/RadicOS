@@ -1,0 +1,40 @@
+[CompactMode]
+FontWeight=50
+
+[DetailsMode]
+FontWeight=50
+
+[DownloadDialog Settings]
+Height 1200=400
+Width 1920=700
+
+[General]
+GlobalViewProps=true
+LockPanels=false
+Version=200
+ViewPropsTimestamp=2014,8,25,4,21,36
+
+[IconsMode]
+FontWeight=50
+
+[KPropertiesDialog]
+Height 1200=425
+Width 1920=515
+
+[MainWindow]
+Height 1080=552
+Height 1200=764
+Height 978=582
+MenuBar=Disabled
+State=AAAA/wAAAAD9AAAAAwAAAAAAAAC0AAAC3PwCAAAAAvsAAAAWAGYAbwBsAGQAZQByAHMARABvAGMAawEAAAAgAAAC3AAAADUA////+wAAABQAcABsAGEAYwBlAHMARABvAGMAawIAAAAAAAAAIAAAALQAAAHUAAAAAQAAAAAAAAAA/AIAAAAB+wAAABAAaQBuAGYAbwBEAG8AYwBrAAAAAAD/////AAAAGgD///8AAAADAAAAAAAAAAD8AQAAAAH7AAAAGAB0AGUAcgBtAGkAbgBhAGwARABvAGMAawAAAAAA/////wAAAFQA////AAADiQAAAtwAAAAEAAAABAAAAAgAAAAI/AAAAAEAAAACAAAAAQAAABYAbQBhAGkAbgBUAG8AbwBsAEIAYQByAQAAAAD/////AAAAAAAAAAA=
+ToolBarsMovable=Disabled
+Width 1699=628
+Width 1920=1091
+
+[PreviewSettings]
+Plugins=directorythumbnail,imagethumbnail,jpegthumbnail
+
+[SettingsDialog]
+Height 1080=353
+Height 1200=349
+Width 1920=573

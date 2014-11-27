@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE khotnewstuff3>
+<hotnewstuffregistry>
+ <stuff category="">
+  <name>Evolvere Aurorae</name>
+  <providerid>https://api.opendesktop.org/v1/</providerid>
+  <author homepage="http://opendesktop.org/usermanager/search.php?username=franksouza183">franksouza183</author>
+  <homepage>http://opendesktop.org/content/show.php?content=164099</homepage>
+  <licence>0</licence>
+  <version>1.0</version>
+  <rating>66</rating>
+  <downloads>2285</downloads>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/Evolvererc</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/minimize.svgz</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/keepbellow.svgz</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/metadata.desktop</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/keepabove.svgz</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/restore.svgz</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/close.svgz</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/maximize.svgz</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/decoration.svgz</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//Evolvere/</installedfile>
+  <installedfile>/home/radic/.kde4/share/apps/aurorae/themes//</installedfile>
+  <id>164099</id>
+  <releasedate>2014-03-16</releasedate>
+  <summary>Part of Evolvere theme suit, soon</summary>
+  <changelog></changelog>
+  <preview>http://openDesktop.org/CONTENT/content-m1/m164099-1.png</preview>
+  <previewBig>http://openDesktop.org/CONTENT/content-pre1/164099-1.jpg</previewBig>
+  <payload>http://opendesktop.org/CONTENT/content-files/164099-Evolvere.tar.gz</payload>
+  <status>installed</status>
+ </stuff>
+</hotnewstuffregistry>

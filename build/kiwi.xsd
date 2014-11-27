@@ -1,0 +1,3060 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ================
+  FILE          : KIWISchema.rnc
+  ****************
+  PROJECT       : openSUSE Build-Service
+  COPYRIGHT     : (c) 2006 SUSE LINUX Products GmbH, Germany
+                :
+  AUTHOR        : Thomas Schraitle <toms@suse.de>
+  AUTHOR        : Marcus Schaefer <ms@suse.de>
+                :
+  BELONGS TO    : Operating System images
+                :
+  DESCRIPTION   : This is the RELAX NG Schema for KIWI
+                : configuration files. The schema is maintained
+                : in the relax compact syntax. Any changes should
+                : made in !! *** KIWISchema.rnc *** !!
+                : 
+                :
+  STATUS        : Development
+  ****************
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <xs:import namespace="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="xsi.xsd"/>
+  <xs:simpleType name="image-name">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[a-zA-Z0-9_\-\.]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="locale-name">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[a-z]{2}_[A-Z]{2}(,[a-z]{2}_[A-Z]{2})*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="mac-address-type">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="size-type">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="\d*|image"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="volume-size-type">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="\d+|\d+M|\d+G|all"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="vhd-tag-type">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!--
+    ==========================================
+    start with image description
+    
+  -->
+  <!--
+    ==========================================
+    main block: <image>
+    
+  -->
+  <xs:attributeGroup name="k.image.name.attribute">
+    <xs:attributeGroup ref="k.imagename.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.image.displayname.attribute">
+    <xs:attributeGroup ref="k.displayname.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.image.noNamespaceSchemaLocation.attribute">
+    <xs:attribute ref="xsi:noNamespaceSchemaLocation" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.image.schemaLocation.attribute">
+    <xs:attribute ref="xsi:schemaLocation" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.image.schemaversion.attribute">
+    <xs:attribute name="schemaversion" use="required">
+      <xs:annotation>
+        <xs:documentation>The allowed Schema version (fixed value)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="5.8"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.image.kiwirevision.attribute">
+    <xs:attribute name="kiwirevision" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.image.id">
+    <xs:attribute name="id" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:length value="10"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.image.attlist">
+    <xs:attributeGroup ref="k.image.name.attribute"/>
+    <xs:attribute name="displayname"/>
+    <xs:attribute name="kiwirevision"/>
+    <xs:attribute name="id">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:length value="10"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attributeGroup ref="k.image.schemaversion.attribute"/>
+    <xs:attribute ref="xsi:noNamespaceSchemaLocation"/>
+    <xs:attribute ref="xsi:schemaLocation"/>
+  </xs:attributeGroup>
+  <xs:element name="image">
+    <xs:annotation>
+      <xs:documentation>The root element of the configuration file		</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="description"/>
+        <xs:element ref="preferences"/>
+        <xs:element ref="profiles"/>
+        <xs:element ref="instsource"/>
+        <xs:element ref="users"/>
+        <xs:element ref="drivers"/>
+        <xs:element ref="strip"/>
+        <xs:element ref="repository"/>
+        <xs:element ref="packages"/>
+      </xs:choice>
+      <xs:attributeGroup ref="k.image.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common attributes
+    
+  -->
+  <xs:attributeGroup name="k.id.attribute">
+    <xs:attribute name="id" use="required" type="xs:ID">
+      <xs:annotation>
+        <xs:documentation>An ID</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.name.attribute">
+    <xs:attribute name="name" use="required">
+      <xs:annotation>
+        <xs:documentation>A name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.replaces.attribute">
+    <xs:attribute name="replaces" use="required">
+      <xs:annotation>
+        <xs:documentation>Replace package with some other package</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.bootinclude.attribute">
+    <xs:attribute name="bootinclude" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.bootdelete.attribute">
+    <xs:attribute name="bootdelete" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.displayname.attribute">
+    <xs:attribute name="displayname" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.arch.attribute">
+    <xs:attribute name="arch" use="required">
+      <xs:annotation>
+        <xs:documentation>An architecture</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.description.attribute">
+    <xs:attribute name="description" use="required">
+      <xs:annotation>
+        <xs:documentation>A short description</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.path.attribute">
+    <xs:attribute name="path" use="required">
+      <xs:annotation>
+        <xs:documentation>A path</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.profiles.attribute">
+    <xs:attribute name="profiles" use="required">
+      <xs:annotation>
+        <xs:documentation>A profile name which binds the section to this name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.password.attribute">
+    <xs:attribute name="password" use="required">
+      <xs:annotation>
+        <xs:documentation>The password</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.script.attribute">
+    <xs:attribute name="script" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.source.attribute">
+    <xs:attribute name="source" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.size.attribute">
+    <xs:attribute name="size" use="required" type="size-type">
+      <xs:annotation>
+        <xs:documentation>A partition size or optional image size</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.dest.attribute">
+    <xs:attribute name="dest" use="required">
+      <xs:annotation>
+        <xs:documentation>Destination of a resource</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.username.attribute">
+    <xs:attribute name="username" use="required">
+      <xs:annotation>
+        <xs:documentation>A name of a user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.imagename.attribute">
+    <xs:attribute name="name" use="required" type="image-name">
+      <xs:annotation>
+        <xs:documentation>An image name without / and spaces</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <!--
+    ==========================================
+    common element <archive>
+    
+  -->
+  <xs:attributeGroup name="k.archive.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.archive.bootinclude.attribute">
+    <xs:attributeGroup ref="k.bootinclude.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.archive.attlist">
+    <xs:attributeGroup ref="k.archive.name.attribute"/>
+    <xs:attribute name="bootinclude" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:element name="archive">
+    <xs:annotation>
+      <xs:documentation>Name of an image archive file (tarball)</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.archive.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <author>
+    
+  -->
+  <xs:element name="author" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Author of the image</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <bootloader-theme>
+    
+  -->
+  <xs:element name="bootloader-theme" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Image bootloader theme setup.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <bootsplash-theme>
+    
+  -->
+  <xs:element name="bootsplash-theme" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Image bootsplash theme setup.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <configuration>
+    
+  -->
+  <xs:attributeGroup name="k.configuration.source.attribute">
+    <xs:attributeGroup ref="k.source.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.configuration.dest.attribute">
+    <xs:attributeGroup ref="k.dest.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.configuration.arch.attribute">
+    <xs:attributeGroup ref="k.arch.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.configuration.attlist">
+    <xs:attributeGroup ref="k.configuration.source.attribute"/>
+    <xs:attributeGroup ref="k.configuration.dest.attribute"/>
+    <xs:attribute name="arch">
+      <xs:annotation>
+        <xs:documentation>An architecture</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="configuration">
+    <xs:annotation>
+      <xs:documentation>Specifies Configuration files</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.configuration.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <contact>
+    
+  -->
+  <xs:element name="contact" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Contact Information from the Author, like Email etc.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <defaultdestination>
+    
+  -->
+  <xs:element name="defaultdestination" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Default Path if destdir Otion is Not Specified</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <defaultprebuilt>
+    
+  -->
+  <xs:element name="defaultprebuilt" type="xs:string"/>
+  <!--
+    ==========================================
+    common element <defaultroot>
+    
+  -->
+  <xs:element name="defaultroot" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Default Root Directory Name if root Option is Not Specified</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <except>
+    
+  -->
+  <xs:attributeGroup name="k.except.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.except.attlist">
+    <xs:attributeGroup ref="k.except.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="except">
+    <xs:annotation>
+      <xs:documentation>A Pointer to a File which should be excluded</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.except.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <file>
+    
+  -->
+  <xs:attributeGroup name="k.file.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.file.arch.attribute">
+    <xs:attributeGroup ref="k.arch.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.file.attlist">
+    <xs:attributeGroup ref="k.file.name.attribute"/>
+    <xs:attribute name="arch">
+      <xs:annotation>
+        <xs:documentation>An architecture</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="file">
+    <xs:annotation>
+      <xs:documentation>A Pointer to a File</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.file.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <hwclock>
+    
+  -->
+  <xs:simpleType name="k.hwclock.content">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="utc"/>
+      <xs:enumeration value="localtime"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="hwclock" type="k.hwclock.content">
+    <xs:annotation>
+      <xs:documentation>Setup Image harware clock setup, either utc or localtime</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <ignore>
+    
+  -->
+  <xs:attributeGroup name="k.ignore.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.ignore.attlist">
+    <xs:attributeGroup ref="k.ignore.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="ignore">
+    <xs:annotation>
+      <xs:documentation>Ignores a Package</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.ignore.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <initrd>
+    
+  -->
+  <xs:element name="initrd" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies where the Boot Image can be Found</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <instrepo>
+    
+  -->
+  <xs:attributeGroup name="k.instrepo.local.attribute">
+    <xs:attribute name="local" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.instrepo.name.attribute">
+    <xs:attribute name="name" use="required" type="xs:ID"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.instrepo.password.attribute">
+    <xs:attributeGroup ref="k.password.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.instrepo.priority.attribute">
+    <xs:attribute name="priority" use="required">
+      <xs:annotation>
+        <xs:documentation>Search priority for packages in this repo</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.instrepo.username.attribute">
+    <xs:attributeGroup ref="k.username.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.instrepo.attlist">
+    <xs:attribute name="local" type="xs:boolean"/>
+    <xs:attributeGroup ref="k.instrepo.name.attribute"/>
+    <xs:attribute name="password">
+      <xs:annotation>
+        <xs:documentation>The password</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="k.instrepo.priority.attribute"/>
+    <xs:attribute name="username">
+      <xs:annotation>
+        <xs:documentation>A name of a user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="instrepo">
+    <xs:annotation>
+      <xs:documentation>Name of a Installation Repository</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="k.source">
+          <xs:attributeGroup ref="k.instrepo.attlist"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <kernel>
+    
+  -->
+  <xs:element name="kernel" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies Where to Find the Boot Kernel</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <keytable>
+    
+  -->
+  <xs:element name="keytable" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Image keytable setup.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <locale>
+    
+  -->
+  <!-- locale -->
+  <xs:element name="locale" type="locale-name">
+    <xs:annotation>
+      <xs:documentation>Image locale setup.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <metadata>
+    
+  -->
+  <xs:element name="metadata">
+    <xs:annotation>
+      <xs:documentation>Contains Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="repopackage"/>
+        <xs:element ref="metafile"/>
+        <xs:element ref="chroot"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <metafile>
+    
+  -->
+  <xs:attributeGroup name="k.metafile.url.attribute">
+    <xs:attribute name="url" use="required">
+      <xs:annotation>
+        <xs:documentation>URL where to find the metafile</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.metafile.script.attribute">
+    <xs:attributeGroup ref="k.script.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.metafile.target.attribute">
+    <xs:attribute name="target" use="required">
+      <xs:annotation>
+        <xs:documentation>Destination path where to download the file</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.metafile.attlist">
+    <xs:attributeGroup ref="k.metafile.url.attribute"/>
+    <xs:attributeGroup ref="k.metafile.script.attribute"/>
+    <xs:attributeGroup ref="k.metafile.target.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="metafile">
+    <xs:annotation>
+      <xs:documentation>A file Pointer Optionally Bundled With a Script</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.metafile.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <namedCollection>
+    
+  -->
+  <xs:attributeGroup name="k.namedCollection.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.namedCollection.arch.attribute">
+    <xs:attributeGroup ref="k.arch.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.namedCollection.attlist">
+    <xs:attributeGroup ref="k.namedCollection.name.attribute"/>
+    <xs:attribute name="arch">
+      <xs:annotation>
+        <xs:documentation>An architecture</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="namedCollection">
+    <xs:annotation>
+      <xs:documentation>Name of a Pattern for SUSE or a Group for RH</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.namedCollection.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <oem-align-partition>
+    
+  -->
+  <xs:simpleType name="k.oem-align-partition.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-align-partition" type="k.oem-align-partition.content"/>
+  <!--
+    ==========================================
+    common element <oem-boot-title>
+    
+  -->
+  <xs:element name="oem-boot-title" type="xs:string"/>
+  <!--
+    ==========================================
+    common element <oem-bootwait>
+    
+  -->
+  <xs:simpleType name="k.oem-bootwait.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-bootwait" type="k.oem-bootwait.content">
+    <xs:annotation>
+      <xs:documentation>For oemboot driven images: halt system after image dump true/false</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <oem-inplace-recovery>
+    
+  -->
+  <xs:simpleType name="k.oem-inplace-recovery.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-inplace-recovery" type="k.oem-inplace-recovery.content"/>
+  <!--
+    ==========================================
+    common element <oem-kiwi-initrd>
+    
+  -->
+  <xs:simpleType name="k.oem-kiwi-initrd.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-kiwi-initrd" type="k.oem-kiwi-initrd.content"/>
+  <!--
+    ==========================================
+    common element <oem-partition-install>
+    
+  -->
+  <xs:simpleType name="k.oem-partition-install.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-partition-install" type="k.oem-partition-install.content"/>
+  <!--
+    ==========================================
+    common element <oem-reboot>
+    
+  -->
+  <xs:simpleType name="k.oem-reboot.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-reboot" type="k.oem-reboot.content">
+    <xs:annotation>
+      <xs:documentation>For oemboot driven images: reboot after first deployment true/false</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <oem-reboot-interactive>
+    
+  -->
+  <xs:simpleType name="k.oem-reboot-interactive.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-reboot-interactive" type="k.oem-reboot-interactive.content">
+    <xs:annotation>
+      <xs:documentation>For oemboot driven images: reboot after first deployment true/false</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <oem-recovery>
+    
+  -->
+  <xs:simpleType name="k.oem-recovery.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-recovery" type="k.oem-recovery.content">
+    <xs:annotation>
+      <xs:documentation>For oemboot driven images: create a recovery archive yes/no</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <oem-recoveryID>
+    
+  -->
+  <xs:element name="oem-recoveryID" type="xs:nonNegativeInteger"/>
+  <!--
+    ==========================================
+    common element <oem-recovery-part-size>
+    
+  -->
+  <xs:element name="oem-recovery-part-size" type="xs:nonNegativeInteger"/>
+  <!--
+    ==========================================
+    common element <oem-shutdown>
+    
+  -->
+  <xs:simpleType name="k.oem-shutdown.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-shutdown" type="k.oem-shutdown.content"/>
+  <!--
+    ==========================================
+    common element <oem-shutdown-interactive>
+    
+  -->
+  <xs:simpleType name="k.oem-shutdown-interactive.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-shutdown-interactive" type="k.oem-shutdown-interactive.content"/>
+  <!--
+    ==========================================
+    common element <oem-silent-boot>
+    
+  -->
+  <xs:simpleType name="k.oem-silent-boot.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-silent-boot" type="k.oem-silent-boot.content"/>
+  <!--
+    ==========================================
+    common element <oem-silent-install>
+    
+  -->
+  <xs:simpleType name="k.oem-silent-install.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-silent-install" type="k.oem-silent-install.content"/>
+  <!--
+    ==========================================
+    common element <oem-skip-verify>
+    
+  -->
+  <xs:simpleType name="k.oem-skip-verify.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-skip-verify" type="k.oem-skip-verify.content"/>
+  <!--
+    ==========================================
+    common element <oem-ataraid-scan>
+    
+  -->
+  <xs:simpleType name="k.oem-ataraid-scan.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-ataraid-scan" type="k.oem-ataraid-scan.content"/>
+  <!--
+    ==========================================
+    common element <oem-silent-verify>
+    
+  -->
+  <xs:simpleType name="k.oem-silent-verify.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-silent-verify" type="k.oem-silent-verify.content"/>
+  <!--
+    ==========================================
+    common element <oem-swap>
+    
+  -->
+  <xs:simpleType name="k.oem-swap.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-swap" type="k.oem-swap.content">
+    <xs:annotation>
+      <xs:documentation>For oemboot driven images: use a swap partition yes/no</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <oem-swapsize>
+    
+  -->
+  <xs:element name="oem-swapsize" type="xs:nonNegativeInteger"/>
+  <!--
+    ==========================================
+    common element <oem-systemsize>
+    
+  -->
+  <xs:element name="oem-systemsize" type="xs:nonNegativeInteger"/>
+  <!--
+    ==========================================
+    common element <oem-unattended>
+    
+  -->
+  <xs:simpleType name="k.oem-unattended.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="oem-unattended" type="k.oem-unattended.content"/>
+  <!--
+    ==========================================
+    common element <oem-unattended-id>
+    
+  -->
+  <xs:element name="oem-unattended-id" type="xs:string"/>
+  <!--
+    ==========================================
+    common element <opensuseProduct>
+    
+  -->
+  <xs:attributeGroup name="k.opensuseproduct.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.opensuseproduct.arch.attribute">
+    <xs:attributeGroup ref="k.arch.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.opensuseproduct.attlist">
+    <xs:attributeGroup ref="k.opensuseproduct.name.attribute"/>
+    <xs:attribute name="arch">
+      <xs:annotation>
+        <xs:documentation>An architecture</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="opensuseProduct">
+    <xs:annotation>
+      <xs:documentation>Name of a Product From openSUSE</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.opensuseproduct.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <package>
+    
+  -->
+  <xs:attributeGroup name="k.package.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.package.arch.attribute">
+    <xs:attributeGroup ref="k.arch.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.package.replaces.attribute">
+    <xs:attributeGroup ref="k.replaces.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.package.bootinclude.attribute">
+    <xs:attributeGroup ref="k.bootinclude.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.package.bootdelete.attribute">
+    <xs:attributeGroup ref="k.bootdelete.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.package.attlist">
+    <xs:attributeGroup ref="k.package.name.attribute"/>
+    <xs:attribute name="arch">
+      <xs:annotation>
+        <xs:documentation>An architecture</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="replaces">
+      <xs:annotation>
+        <xs:documentation>Replace package with some other package</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="bootdelete" type="xs:boolean"/>
+    <xs:attribute name="bootinclude" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:element name="package">
+    <xs:annotation>
+      <xs:documentation>Name of an image Package</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.package.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <packagemanager>
+    
+  -->
+  <xs:simpleType name="k.packagemanager.content">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="apt-get"/>
+      <xs:enumeration value="smart"/>
+      <xs:enumeration value="zypper"/>
+      <xs:enumeration value="ensconce"/>
+      <xs:enumeration value="yum"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="packagemanager" type="k.packagemanager.content">
+    <xs:annotation>
+      <xs:documentation>Name of the Package Manager</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <partition>
+    
+  -->
+  <xs:attributeGroup name="k.partition.type.attribute">
+    <xs:attribute name="type" use="required">
+      <xs:annotation>
+        <xs:documentation>Partition Type identifier, see parted for details</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.partition.number.attribute">
+    <xs:attribute name="number" use="required">
+      <xs:annotation>
+        <xs:documentation>Partition ID</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.partition.size.attribute">
+    <xs:attributeGroup ref="k.size.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.partition.mountpoint.attribute">
+    <xs:attribute name="mountpoint" use="required">
+      <xs:annotation>
+        <xs:documentation>Mount path for this partition</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.partition.target.attribute">
+    <xs:attribute name="target" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.partition.attlist">
+    <xs:attributeGroup ref="k.partition.type.attribute"/>
+    <xs:attributeGroup ref="k.partition.number.attribute"/>
+    <xs:attribute name="size" type="size-type">
+      <xs:annotation>
+        <xs:documentation>A partition size or optional image size</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="mountpoint">
+      <xs:annotation>
+        <xs:documentation>Mount path for this partition</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="target" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:element name="partition">
+    <xs:annotation>
+      <xs:documentation>A Partition</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.partition.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <partitions>
+    
+  -->
+  <xs:attributeGroup name="k.partitions.device.attribute">
+    <xs:attribute name="device" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.partitions.attlist">
+    <xs:attribute name="device"/>
+  </xs:attributeGroup>
+  <xs:element name="partitions">
+    <xs:annotation>
+      <xs:documentation>A List of Partitions</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="partition"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="k.partitions.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <persistent>
+    
+  -->
+  <xs:element name="persistent">
+    <xs:annotation>
+      <xs:documentation>Specifies Filenames in the Read-Write Disk Area</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="except"/>
+        <xs:element ref="file"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <profile>
+    
+  -->
+  <xs:attributeGroup name="k.profile.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.profile.description.attribute">
+    <xs:attribute name="description" use="required">
+      <xs:annotation>
+        <xs:documentation>Description of how this profiles influences the image</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.profile.import.attribute">
+    <xs:attribute name="import" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.profile.attlist">
+    <xs:attributeGroup ref="k.profile.name.attribute"/>
+    <xs:attributeGroup ref="k.profile.description.attribute"/>
+    <xs:attribute name="import" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:element name="profile">
+    <xs:annotation>
+      <xs:documentation>Creates Profiles</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.profile.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <repopackage>
+    
+  -->
+  <xs:attributeGroup name="k.repopackage.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.arch.attribute">
+    <xs:attributeGroup ref="k.arch.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.forcerepo.attribute">
+    <xs:attribute name="forcerepo" use="required" type="xs:IDREF">
+      <xs:annotation>
+        <xs:documentation>Specifies the search priority</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.addarch.attribute">
+    <xs:attribute name="addarch" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.removearch.attribute">
+    <xs:attribute name="removearch" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.onlyarch.attribute">
+    <xs:attribute name="onlyarch" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.medium.attribute">
+    <xs:attribute name="medium" use="required" type="xs:nonNegativeInteger"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.source.attribute">
+    <xs:attributeGroup ref="k.source.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.script.attribute">
+    <xs:attributeGroup ref="k.script.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repopackage.attlist">
+    <xs:attributeGroup ref="k.repopackage.name.attribute"/>
+    <xs:attribute name="arch">
+      <xs:annotation>
+        <xs:documentation>An architecture</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="forcerepo" type="xs:IDREF">
+      <xs:annotation>
+        <xs:documentation>Specifies the search priority</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="addarch"/>
+    <xs:attribute name="removearch"/>
+    <xs:attribute name="onlyarch"/>
+    <xs:attribute name="source"/>
+    <xs:attribute name="script"/>
+    <xs:attribute name="medium" type="xs:nonNegativeInteger"/>
+  </xs:attributeGroup>
+  <xs:element name="repopackage">
+    <xs:annotation>
+      <xs:documentation>Name of an instsource Package</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.repopackage.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <repository>
+    
+  -->
+  <xs:attributeGroup name="k.repository.profiles.attribute">
+    <xs:attributeGroup ref="k.profiles.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.type.attribute">
+    <xs:attribute name="type" use="required">
+      <xs:annotation>
+        <xs:documentation>Type of repository</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="apt-deb"/>
+          <xs:enumeration value="apt-rpm"/>
+          <xs:enumeration value="deb-dir"/>
+          <xs:enumeration value="mirrors"/>
+          <xs:enumeration value="red-carpet"/>
+          <xs:enumeration value="rpm-dir"/>
+          <xs:enumeration value="rpm-md"/>
+          <xs:enumeration value="slack-site"/>
+          <xs:enumeration value="up2date-mirrors"/>
+          <xs:enumeration value="urpmi"/>
+          <xs:enumeration value="yast2"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.status.attribute">
+    <xs:attribute name="status" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="fixed"/>
+          <xs:enumeration value="replaceable"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.alias.attribute">
+    <xs:attribute name="alias" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.components.attribute">
+    <xs:attribute name="components" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.distribution.attribute">
+    <xs:attribute name="distribution" use="required">
+      <xs:annotation>
+        <xs:documentation>Distribution name information, used for deb repositories</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.imageinclude.attribute">
+    <xs:attribute name="imageinclude" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.prefer-license.attribute">
+    <xs:attribute name="prefer-license" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.priority.attribute">
+    <xs:attribute name="priority" use="required" type="xs:integer"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.password.attribute">
+    <xs:attributeGroup ref="k.password.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.username.attribute">
+    <xs:attributeGroup ref="k.username.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.repository.attlist">
+    <xs:attributeGroup ref="k.repository.type.attribute"/>
+    <xs:attribute name="profiles">
+      <xs:annotation>
+        <xs:documentation>A profile name which binds the section to this name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="status">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="fixed"/>
+          <xs:enumeration value="replaceable"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="alias"/>
+    <xs:attribute name="components"/>
+    <xs:attribute name="distribution">
+      <xs:annotation>
+        <xs:documentation>Distribution name information, used for deb repositories</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="imageinclude" type="xs:boolean"/>
+    <xs:attribute name="prefer-license" type="xs:boolean"/>
+    <xs:attribute name="priority" type="xs:integer"/>
+    <xs:attribute name="password">
+      <xs:annotation>
+        <xs:documentation>The password</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="username">
+      <xs:annotation>
+        <xs:documentation>A name of a user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="repository">
+    <xs:annotation>
+      <xs:documentation>The Name of the Repository</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="k.source">
+          <xs:attributeGroup ref="k.repository.attlist"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <rpm-check-signatures>
+    
+  -->
+  <xs:simpleType name="k.rpm-check-signatures.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="rpm-check-signatures" type="k.rpm-check-signatures.content">
+    <xs:annotation>
+      <xs:documentation>Setup a Package Signature</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <rpm-excludedocs>
+    
+  -->
+  <xs:simpleType name="k.rpm-excludedocs.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="rpm-excludedocs" type="k.rpm-excludedocs.content">
+    <xs:annotation>
+      <xs:documentation>Do not install files marked as documentation in the package</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <rpm-force>
+    
+  -->
+  <xs:simpleType name="k.rpm-force.content">
+    <xs:restriction base="xs:boolean"/>
+  </xs:simpleType>
+  <xs:element name="rpm-force" type="k.rpm-force.content">
+    <xs:annotation>
+      <xs:documentation>Force the Installation of a Package</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <showlicense>
+    
+  -->
+  <xs:element name="showlicense" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Setup showlicense</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <size>
+    
+  -->
+  <xs:attributeGroup name="k.size.unit.attribute">
+    <xs:attribute name="unit" use="required">
+      <xs:annotation>
+        <xs:documentation>The unit of the image</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="M"/>
+          <xs:enumeration value="G"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.size.additive.attribute">
+    <xs:attribute name="additive" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.size.attlist">
+    <xs:attribute name="unit">
+      <xs:annotation>
+        <xs:documentation>The unit of the image</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="M"/>
+          <xs:enumeration value="G"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="additive" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:element name="size">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:nonNegativeInteger">
+          <xs:attributeGroup ref="k.size.attlist"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <source>
+    
+  -->
+  <xs:attributeGroup name="k.source.path.attribute">
+    <xs:attributeGroup ref="k.path.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.source.attlist">
+    <xs:attributeGroup ref="k.source.path.attribute"/>
+  </xs:attributeGroup>
+  <xs:complexType name="k.source">
+    <xs:sequence>
+      <xs:element ref="source"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="source">
+    <xs:annotation>
+      <xs:documentation>A Pointer to a Repository/Package Source</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.source.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <specification>
+    
+  -->
+  <xs:element name="specification" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>A Detailed Description</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <systemdisk>
+    
+  -->
+  <xs:attributeGroup name="k.systemdisk.lvmgroup.attribute">
+    <xs:attribute name="name" use="required">
+      <xs:annotation>
+        <xs:documentation>Specify Volume group name, default is kiwiVG.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.systemdisk.attlist">
+    <xs:attribute name="name">
+      <xs:annotation>
+        <xs:documentation>Specify Volume group name, default is kiwiVG.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="systemdisk">
+    <xs:annotation>
+      <xs:documentation>Specify LVM volumes other than the root volume</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="volume"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="k.systemdisk.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <temporary>
+    
+  -->
+  <xs:element name="temporary">
+    <xs:annotation>
+      <xs:documentation>Specifies Files in RAM</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="except"/>
+        <xs:element ref="file"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <timeout>
+    
+  -->
+  <xs:element name="timeout" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Specifies an ATFTP Download Timeout</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <timezone>
+    
+  -->
+  <xs:element name="timezone" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>Setup Image Timezone setup</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <type>
+    
+  -->
+  <xs:attributeGroup name="k.type.boot.attribute">
+    <xs:attribute name="boot" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.bootkernel.attribute">
+    <xs:attribute name="bootkernel" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.bootloader.attribute">
+    <xs:attribute name="bootloader" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="extlinux"/>
+          <xs:enumeration value="grub"/>
+          <xs:enumeration value="grub2"/>
+          <xs:enumeration value="syslinux"/>
+          <xs:enumeration value="zipl"/>
+          <xs:enumeration value="yaboot"/>
+          <xs:enumeration value="uboot"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.bootpartsize.attribute">
+    <xs:attribute name="bootpartsize" use="required" type="xs:nonNegativeInteger"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.bootprofile.attribute">
+    <xs:attribute name="bootprofile" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.boottimeout.attribute">
+    <xs:attribute name="boottimeout" use="required" type="xs:nonNegativeInteger"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.checkprebuilt.attribute">
+    <xs:attribute name="checkprebuilt" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.compressed.attribute">
+    <xs:attribute name="compressed" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.container.attribute">
+    <xs:attribute name="container" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies a name for the container</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.devicepersistency.attribute">
+    <xs:attribute name="devicepersistency" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="by-uuid"/>
+          <xs:enumeration value="by-label"/>
+          <xs:enumeration value="by-path"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.editbootconfig.attribute">
+    <xs:attribute name="editbootconfig" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.editbootinstall.attribute">
+    <xs:attribute name="editbootinstall" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.filesystem.attribute">
+    <xs:attribute name="filesystem" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the root filesystem type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="btrfs"/>
+          <xs:enumeration value="clicfs"/>
+          <xs:enumeration value="ext2"/>
+          <xs:enumeration value="ext3"/>
+          <xs:enumeration value="ext4"/>
+          <xs:enumeration value="overlayfs"/>
+          <xs:enumeration value="reiserfs"/>
+          <xs:enumeration value="squashfs"/>
+          <xs:enumeration value="xfs"/>
+          <xs:enumeration value="zfs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.firmware.attribute">
+    <xs:attribute name="firmware" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="bios"/>
+          <xs:enumeration value="ec2"/>
+          <xs:enumeration value="efi"/>
+          <xs:enumeration value="uefi"/>
+          <xs:enumeration value="vboot"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.bootfilesystem.attribute">
+    <xs:attribute name="bootfilesystem" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ext2"/>
+          <xs:enumeration value="ext3"/>
+          <xs:enumeration value="fat32"/>
+          <xs:enumeration value="fat16"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.flags.attribute">
+    <xs:attribute name="flags" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="clic"/>
+          <xs:enumeration value="compressed"/>
+          <xs:enumeration value="clic_udf"/>
+          <xs:enumeration value="overlay"/>
+          <xs:enumeration value="seed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.format.attribute">
+    <xs:attribute name="format" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ec2"/>
+          <xs:enumeration value="ovf"/>
+          <xs:enumeration value="ova"/>
+          <xs:enumeration value="qcow2"/>
+          <xs:enumeration value="vmdk"/>
+          <xs:enumeration value="vhd"/>
+          <xs:enumeration value="vhd-fixed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.fsnocheck.attribute">
+    <xs:attribute name="fsnocheck" use="required" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Turn off periodic filesystem checks on ext2/3/4.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.fsreadonly.attribute">
+    <xs:attribute name="fsreadonly" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the filesystem for the read-only part of a split image</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="squashfs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.fsreadwrite.attribute">
+    <xs:attribute name="fsreadwrite" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the filesystem for the read-write part of a split image</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="btrfs"/>
+          <xs:enumeration value="ext2"/>
+          <xs:enumeration value="ext3"/>
+          <xs:enumeration value="ext4"/>
+          <xs:enumeration value="reiserfs"/>
+          <xs:enumeration value="xfs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.fsmountoptions.attribute">
+    <xs:attribute name="fsmountoptions" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.zfsoptions.attribute">
+    <xs:attribute name="zfsoptions" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the zfs pool options used on creation of the pool</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.hybrid.attribute">
+    <xs:attribute name="hybrid" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.hybridpersistent.attribute">
+    <xs:attribute name="hybridpersistent" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.image.attribute">
+    <xs:attribute name="image" use="required">
+      <xs:annotation>
+        <xs:documentation>Specifies the image type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="btrfs"/>
+          <xs:enumeration value="clicfs"/>
+          <xs:enumeration value="cpio"/>
+          <xs:enumeration value="ext2"/>
+          <xs:enumeration value="ext3"/>
+          <xs:enumeration value="ext4"/>
+          <xs:enumeration value="iso"/>
+          <xs:enumeration value="lxc"/>
+          <xs:enumeration value="oem"/>
+          <xs:enumeration value="product"/>
+          <xs:enumeration value="pxe"/>
+          <xs:enumeration value="reiserfs"/>
+          <xs:enumeration value="split"/>
+          <xs:enumeration value="squashfs"/>
+          <xs:enumeration value="tbz"/>
+          <xs:enumeration value="vmx"/>
+          <xs:enumeration value="xfs"/>
+          <xs:enumeration value="zfs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.installboot.attribute">
+    <xs:attribute name="installboot" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="failsafe-install"/>
+          <xs:enumeration value="harddisk"/>
+          <xs:enumeration value="install"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.installprovidefailsafe.attribute">
+    <xs:attribute name="installprovidefailsafe" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.installiso.attribute">
+    <xs:attribute name="installiso" use="required" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Specifies if a install iso should be created (oem only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.installstick.attribute">
+    <xs:attribute name="installstick" use="required" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Specifies if a install stick should be created (oem only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.installpxe.attribute">
+    <xs:attribute name="installpxe" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.kernelcmdline.attribute">
+    <xs:attribute name="kernelcmdline" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.luks.attribute">
+    <xs:attribute name="luks" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.luksOS.attribute">
+    <xs:attribute name="luksOS" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="sle11"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.mdraid.attribute">
+    <xs:attribute name="mdraid" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="mirroring"/>
+          <xs:enumeration value="striping"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.primary.attribute">
+    <xs:attribute name="primary" use="required" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Specifies the primary type (choose KIWI option type)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.ramonly.attribute">
+    <xs:attribute name="ramonly" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.vga.attribute">
+    <xs:attribute name="vga" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.vhd-fixed-tag.attribute">
+    <xs:attribute name="vhdfixedtag" use="required" type="vhd-tag-type">
+      <xs:annotation>
+        <xs:documentation>Specifies the GUID in a fixed format VHD</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.volid.attribute">
+    <xs:attribute name="volid" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.type.attlist">
+    <xs:attribute name="boot"/>
+    <xs:attribute name="bootfilesystem">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ext2"/>
+          <xs:enumeration value="ext3"/>
+          <xs:enumeration value="fat32"/>
+          <xs:enumeration value="fat16"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="firmware">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="bios"/>
+          <xs:enumeration value="ec2"/>
+          <xs:enumeration value="efi"/>
+          <xs:enumeration value="uefi"/>
+          <xs:enumeration value="vboot"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="bootkernel"/>
+    <xs:attribute name="bootloader">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="extlinux"/>
+          <xs:enumeration value="grub"/>
+          <xs:enumeration value="grub2"/>
+          <xs:enumeration value="syslinux"/>
+          <xs:enumeration value="zipl"/>
+          <xs:enumeration value="yaboot"/>
+          <xs:enumeration value="uboot"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="bootpartsize" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="bootprofile"/>
+    <xs:attribute name="boottimeout" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="checkprebuilt" type="xs:boolean"/>
+    <xs:attribute name="compressed" type="xs:boolean"/>
+    <xs:attribute name="container">
+      <xs:annotation>
+        <xs:documentation>Specifies a name for the container</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="devicepersistency">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="by-uuid"/>
+          <xs:enumeration value="by-label"/>
+          <xs:enumeration value="by-path"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="editbootconfig"/>
+    <xs:attribute name="editbootinstall"/>
+    <xs:attribute name="filesystem">
+      <xs:annotation>
+        <xs:documentation>Specifies the root filesystem type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="btrfs"/>
+          <xs:enumeration value="clicfs"/>
+          <xs:enumeration value="ext2"/>
+          <xs:enumeration value="ext3"/>
+          <xs:enumeration value="ext4"/>
+          <xs:enumeration value="overlayfs"/>
+          <xs:enumeration value="reiserfs"/>
+          <xs:enumeration value="squashfs"/>
+          <xs:enumeration value="xfs"/>
+          <xs:enumeration value="zfs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="flags">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="clic"/>
+          <xs:enumeration value="compressed"/>
+          <xs:enumeration value="clic_udf"/>
+          <xs:enumeration value="overlay"/>
+          <xs:enumeration value="seed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="format">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ec2"/>
+          <xs:enumeration value="ovf"/>
+          <xs:enumeration value="ova"/>
+          <xs:enumeration value="qcow2"/>
+          <xs:enumeration value="vmdk"/>
+          <xs:enumeration value="vhd"/>
+          <xs:enumeration value="vhd-fixed"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="fsnocheck" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Turn off periodic filesystem checks on ext2/3/4.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="fsreadonly">
+      <xs:annotation>
+        <xs:documentation>Specifies the filesystem for the read-only part of a split image</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="squashfs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="fsreadwrite">
+      <xs:annotation>
+        <xs:documentation>Specifies the filesystem for the read-write part of a split image</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="btrfs"/>
+          <xs:enumeration value="ext2"/>
+          <xs:enumeration value="ext3"/>
+          <xs:enumeration value="ext4"/>
+          <xs:enumeration value="reiserfs"/>
+          <xs:enumeration value="xfs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="fsmountoptions"/>
+    <xs:attribute name="zfsoptions">
+      <xs:annotation>
+        <xs:documentation>Specifies the zfs pool options used on creation of the pool</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="hybrid" type="xs:boolean"/>
+    <xs:attribute name="hybridpersistent" type="xs:boolean"/>
+    <xs:attributeGroup ref="k.type.image.attribute"/>
+    <xs:attribute name="installboot">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="failsafe-install"/>
+          <xs:enumeration value="harddisk"/>
+          <xs:enumeration value="install"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="installprovidefailsafe" type="xs:boolean"/>
+    <xs:attribute name="installiso" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Specifies if a install iso should be created (oem only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="installstick" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Specifies if a install stick should be created (oem only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="installpxe" type="xs:boolean"/>
+    <xs:attribute name="kernelcmdline"/>
+    <xs:attribute name="luks"/>
+    <xs:attribute name="luksOS">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="sle11"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="mdraid">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="mirroring"/>
+          <xs:enumeration value="striping"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="primary" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Specifies the primary type (choose KIWI option type)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ramonly" type="xs:boolean"/>
+    <xs:attribute name="vga"/>
+    <xs:attribute name="vhdfixedtag" type="vhd-tag-type">
+      <xs:annotation>
+        <xs:documentation>Specifies the GUID in a fixed format VHD</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="volid"/>
+  </xs:attributeGroup>
+  <xs:element name="type">
+    <xs:annotation>
+      <xs:documentation>The Image Type of the Logical Extend</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="machine"/>
+        <xs:element ref="oemconfig"/>
+        <xs:element ref="pxedeploy"/>
+        <xs:element ref="size"/>
+        <xs:element ref="split"/>
+        <xs:element ref="systemdisk"/>
+      </xs:choice>
+      <xs:attributeGroup ref="k.type.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <union>
+    
+  -->
+  <xs:attributeGroup name="k.union.ro.attribute">
+    <xs:attribute name="ro" use="required">
+      <xs:annotation>
+        <xs:documentation>Device only for read-only </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.union.rw.attribute">
+    <xs:attribute name="rw" use="required">
+      <xs:annotation>
+        <xs:documentation>Device for Read-Write</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.union.type.attribute">
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="clicfs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.union.attlist">
+    <xs:attributeGroup ref="k.union.ro.attribute"/>
+    <xs:attributeGroup ref="k.union.rw.attribute"/>
+    <xs:attributeGroup ref="k.union.type.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="union">
+    <xs:annotation>
+      <xs:documentation>Specifies the Overlay Filesystem</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.union.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <user>
+    
+  -->
+  <xs:attributeGroup name="k.user.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.user.id.attribute">
+    <xs:attribute name="id" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The user ID for this user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.user.realname.attribute">
+    <xs:attribute name="realname" use="required">
+      <xs:annotation>
+        <xs:documentation>The name of an user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.user.password.attribute">
+    <xs:attributeGroup ref="k.password.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.user.pwdformat">
+    <xs:attribute name="pwdformat" use="required">
+      <xs:annotation>
+        <xs:documentation>Format of the given password, encrypted is the default</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="encrypted"/>
+          <xs:enumeration value="plain"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.user.home.attribute">
+    <xs:attribute name="home" use="required">
+      <xs:annotation>
+        <xs:documentation>The home directory for this user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.user.shell.attribute">
+    <xs:attribute name="shell" use="required">
+      <xs:annotation>
+        <xs:documentation>The shell for this user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.user.attlist">
+    <xs:attributeGroup ref="k.user.home.attribute"/>
+    <xs:attribute name="id" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The user ID for this user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="k.user.name.attribute"/>
+    <xs:attribute name="password">
+      <xs:annotation>
+        <xs:documentation>The password</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="pwdformat">
+      <xs:annotation>
+        <xs:documentation>Format of the given password, encrypted is the default</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="encrypted"/>
+          <xs:enumeration value="plain"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="realname">
+      <xs:annotation>
+        <xs:documentation>The name of an user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="shell">
+      <xs:annotation>
+        <xs:documentation>The shell for this user</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="user">
+    <xs:annotation>
+      <xs:documentation>A User with Name, Password, Path to Its Home And Shell</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.user.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <version>
+    
+  -->
+  <xs:element name="version" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>A Version Number for the Image, Consists of Major.Minor.Release </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <vmconfig-entry>
+    
+  -->
+  <xs:element name="vmconfig-entry" type="xs:string">
+    <xs:annotation>
+      <xs:documentation>An entry for the VM configuration file</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <vmdisk>
+    
+  -->
+  <xs:attributeGroup name="k.vmdisk.disktype.attribute">
+    <xs:attribute name="disktype" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmdisk.controller.attribute">
+    <xs:attribute name="controller" use="required">
+      <xs:annotation>
+        <xs:documentation>The disk controller used for the VM guest (vmdk only)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ide"/>
+          <xs:enumeration value="scsi"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmdisk.id.attribute">
+    <xs:attribute name="id" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The disk ID / device for the VM disk (vmdk only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmdisk.device.attribute">
+    <xs:attribute name="device" use="required">
+      <xs:annotation>
+        <xs:documentation>The disk device to appear in the guest (xen only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmdisk.attlist">
+    <xs:attribute name="disktype"/>
+    <xs:attribute name="controller">
+      <xs:annotation>
+        <xs:documentation>The disk controller used for the VM guest (vmdk only)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ide"/>
+          <xs:enumeration value="scsi"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="id" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The disk ID / device for the VM disk (vmdk only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="device">
+      <xs:annotation>
+        <xs:documentation>The disk device to appear in the guest (xen only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="vmdisk">
+    <xs:annotation>
+      <xs:documentation>The VM disk definition.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.vmdisk.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <vmdvd>
+    
+  -->
+  <xs:attributeGroup name="k.vmdvd.controller.attribute">
+    <xs:attribute name="controller" use="required">
+      <xs:annotation>
+        <xs:documentation>The CD/DVD controller used for the VM guest</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ide"/>
+          <xs:enumeration value="scsi"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmdvd.id.attribute">
+    <xs:attribute name="id" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The CD/DVD ID for the VM CD rom drive</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmdvd.attlist">
+    <xs:attributeGroup ref="k.vmdvd.controller.attribute"/>
+    <xs:attributeGroup ref="k.vmdvd.id.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="vmdvd">
+    <xs:complexType>
+      <xs:attributeGroup ref="k.vmdvd.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <vmnic>
+    
+  -->
+  <xs:attributeGroup name="k.vmnic.driver.attribute">
+    <xs:attribute name="driver" use="required">
+      <xs:annotation>
+        <xs:documentation>The driver used for the VM network interface</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmnic.interface.attribute">
+    <xs:attribute name="interface" use="required">
+      <xs:annotation>
+        <xs:documentation>The interface ID for the VM network interface</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmnic.mode.attribute">
+    <xs:attribute name="mode" use="required">
+      <xs:annotation>
+        <xs:documentation>The VM network mode</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmnic.mac.attribute">
+    <xs:attribute name="mac" use="required" type="mac-address-type">
+      <xs:annotation>
+        <xs:documentation>The VM mac address</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.vmnic.attlist">
+    <xs:attribute name="driver">
+      <xs:annotation>
+        <xs:documentation>The driver used for the VM network interface</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="k.vmnic.interface.attribute"/>
+    <xs:attribute name="mode">
+      <xs:annotation>
+        <xs:documentation>The VM network mode</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="mac" type="mac-address-type">
+      <xs:annotation>
+        <xs:documentation>The VM mac address</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="vmnic">
+    <xs:annotation>
+      <xs:documentation>The VM network interface definition</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.vmnic.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    common element <volume>
+    
+  -->
+  <xs:attributeGroup name="k.volume.freespace.attribute">
+    <xs:attribute name="freespace" use="required" type="volume-size-type"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.volume.name.attribute">
+    <xs:attribute name="name" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.volume.mountpoint.attribute">
+    <xs:attribute name="mountpoint" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.volume.size.attribute">
+    <xs:attribute name="size" use="required" type="volume-size-type"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.volume.attlist">
+    <xs:attribute name="freespace" type="volume-size-type"/>
+    <xs:attribute name="mountpoint"/>
+    <xs:attributeGroup ref="k.volume.name.attribute"/>
+    <xs:attribute name="size" type="volume-size-type"/>
+  </xs:attributeGroup>
+  <xs:element name="volume">
+    <xs:complexType>
+      <xs:attributeGroup ref="k.volume.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <pxedeploy>
+    
+  -->
+  <xs:attributeGroup name="k.pxedeploy.server.attribute">
+    <xs:attribute name="server" use="required">
+      <xs:annotation>
+        <xs:documentation>Name or IP Address of server for downloading the data</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.pxedeploy.blocksize.attribute">
+    <xs:attribute name="blocksize" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>Blocksize value used for atftp downloads</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.pxedeploy.attlist">
+    <xs:attribute name="server">
+      <xs:annotation>
+        <xs:documentation>Name or IP Address of server for downloading the data</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="blocksize" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>Blocksize value used for atftp downloads</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="pxedeploy">
+    <xs:annotation>
+      <xs:documentation>Controls the Image Deploy Process</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="timeout"/>
+        <xs:element ref="kernel"/>
+        <xs:element ref="initrd"/>
+        <xs:element ref="partitions"/>
+        <xs:element ref="union"/>
+        <xs:element ref="configuration"/>
+      </xs:choice>
+      <xs:attributeGroup ref="k.pxedeploy.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <description>
+    
+  -->
+  <xs:attributeGroup name="k.description.type.attribute">
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="boot"/>
+          <xs:enumeration value="system"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.description.attlist">
+    <xs:attributeGroup ref="k.description.type.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="description">
+    <xs:annotation>
+      <xs:documentation>A Short Description</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="author"/>
+        <xs:element ref="contact"/>
+        <xs:element ref="specification"/>
+      </xs:choice>
+      <xs:attributeGroup ref="k.description.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <drivers>
+    
+  -->
+  <xs:attributeGroup name="k.drivers.profiles.attribute">
+    <xs:attributeGroup ref="k.profiles.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.drivers.attlist">
+    <xs:attribute name="profiles">
+      <xs:annotation>
+        <xs:documentation>A profile name which binds the section to this name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="drivers">
+    <xs:annotation>
+      <xs:documentation>A Collection of Driver Files </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="file"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="k.drivers.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <strip>
+    
+  -->
+  <xs:attributeGroup name="k.strip.type.attribute">
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="delete"/>
+          <xs:enumeration value="tools"/>
+          <xs:enumeration value="libs"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.strip.profiles.attribute">
+    <xs:attributeGroup ref="k.profiles.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.strip.attlist">
+    <xs:attributeGroup ref="k.strip.type.attribute"/>
+    <xs:attribute name="profiles">
+      <xs:annotation>
+        <xs:documentation>A profile name which binds the section to this name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="strip">
+    <xs:annotation>
+      <xs:documentation>A Collection of files to strip</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="file"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="k.strip.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <instsource>
+    
+  -->
+  <xs:element name="instsource">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="architectures"/>
+        <xs:element ref="productoptions"/>
+        <xs:element ref="instrepo"/>
+        <xs:element ref="metadata"/>
+        <xs:element ref="repopackages"/>
+        <xs:element ref="driverupdate"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <architectures>
+    
+  -->
+  <xs:element name="architectures">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="arch"/>
+        <xs:element ref="requiredarch"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <productoptions>
+    
+  -->
+  <xs:element name="productoptions">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="productoption"/>
+        <xs:element ref="productinfo"/>
+        <xs:element ref="productvar"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <productoption>
+    
+  -->
+  <xs:attributeGroup name="k.productoption.attlist">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="productoption">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="k.productoption.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <arch>
+    
+  -->
+  <xs:attributeGroup name="k.arch.name.attribute">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.arch.id.attribute">
+    <xs:attributeGroup ref="k.id.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.arch.fallback.attribute">
+    <xs:attribute name="fallback" use="required" type="xs:IDREF"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.arch.attlist">
+    <xs:attributeGroup ref="k.arch.id.attribute"/>
+    <xs:attributeGroup ref="k.arch.name.attribute"/>
+    <xs:attribute name="fallback" type="xs:IDREF"/>
+  </xs:attributeGroup>
+  <xs:element name="arch">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.arch.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <requiredarch>
+    
+  -->
+  <xs:attributeGroup name="k.requiredarch.ref.attribute">
+    <xs:attribute name="ref" use="required" type="xs:IDREF"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.requiredarch.attlist">
+    <xs:attributeGroup ref="k.requiredarch.ref.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="requiredarch">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attributeGroup ref="k.requiredarch.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <productinfo>
+    
+  -->
+  <xs:attributeGroup name="k.productinfo.attlist">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="productinfo">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="k.productinfo.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <productvar>
+    
+  -->
+  <xs:attributeGroup name="k.productvar.attlist">
+    <xs:attributeGroup ref="k.name.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="productvar">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="k.productvar.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <chroot>
+    
+  -->
+  <xs:attributeGroup name="k.chroot.attlist">
+    <xs:attribute name="requires" use="required"/>
+  </xs:attributeGroup>
+  <xs:element name="chroot">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="k.chroot.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <repopackages>
+    
+  -->
+  <xs:element name="repopackages">
+    <xs:annotation>
+      <xs:documentation>Specifies Packages for Installation Source</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="repopackage"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <driverupdate>
+    
+  -->
+  <xs:element name="driverupdate">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="target"/>
+        <xs:element ref="install"/>
+        <xs:element ref="modules"/>
+        <xs:element ref="instsys"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <target>
+    
+  -->
+  <xs:attributeGroup name="k.target.arch.attribute">
+    <xs:attributeGroup ref="k.arch.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.target.attlist">
+    <xs:attributeGroup ref="k.target.arch.attribute"/>
+  </xs:attributeGroup>
+  <xs:element name="target">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="k.target.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <install>
+    
+  -->
+  <xs:element name="install">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="repopackage"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <modules>
+    
+  -->
+  <xs:element name="modules">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="repopackage"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <instsys>
+    
+  -->
+  <xs:element name="instsys">
+    <xs:annotation>
+      <xs:documentation>Describe Packages and Metadata</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="repopackage"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <oemconfig>
+    
+  -->
+  <xs:element name="oemconfig">
+    <xs:annotation>
+      <xs:documentation>Specifies the OEM configuration section</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="oem-align-partition"/>
+        <xs:element ref="oem-ataraid-scan"/>
+        <xs:element ref="oem-boot-title"/>
+        <xs:element ref="oem-bootwait"/>
+        <xs:element ref="oem-inplace-recovery"/>
+        <xs:element ref="oem-kiwi-initrd"/>
+        <xs:element ref="oem-partition-install"/>
+        <xs:element ref="oem-reboot"/>
+        <xs:element ref="oem-reboot-interactive"/>
+        <xs:element ref="oem-recovery"/>
+        <xs:element ref="oem-recoveryID"/>
+        <xs:element ref="oem-recovery-part-size"/>
+        <xs:element ref="oem-shutdown"/>
+        <xs:element ref="oem-shutdown-interactive"/>
+        <xs:element ref="oem-silent-boot"/>
+        <xs:element ref="oem-silent-install"/>
+        <xs:element ref="oem-silent-verify"/>
+        <xs:element ref="oem-skip-verify"/>
+        <xs:element ref="oem-swap"/>
+        <xs:element ref="oem-swapsize"/>
+        <xs:element ref="oem-systemsize"/>
+        <xs:element ref="oem-unattended"/>
+        <xs:element ref="oem-unattended-id"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <machine>
+    
+  -->
+  <xs:attributeGroup name="k.machine.ovftype.attribute">
+    <xs:attribute name="ovftype" use="required">
+      <xs:annotation>
+        <xs:documentation>The OVF configuration type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="zvm"/>
+          <xs:enumeration value="powervm"/>
+          <xs:enumeration value="xen"/>
+          <xs:enumeration value="vmware"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.HWversion.attribute">
+    <xs:attribute name="HWversion" use="required" type="xs:integer"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.arch.attribute">
+    <xs:attribute name="arch" use="required">
+      <xs:annotation>
+        <xs:documentation>the VM architecture type (vmdk only)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ix86"/>
+          <xs:enumeration value="x86_64"/>
+          <xs:enumeration value="%arch"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.domain.attribute">
+    <xs:attribute name="domain" use="required">
+      <xs:annotation>
+        <xs:documentation>The domain setup for the VM (xen only)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="dom0"/>
+          <xs:enumeration value="domU"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.guestOS.attribute">
+    <xs:attribute name="guestOS" use="required"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.min_memory.attribute">
+    <xs:attribute name="min_memory" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The virtual machine min memory in MB (ovf only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.max_memory.attribute">
+    <xs:attribute name="max_memory" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The virtual machine max memory in MB (ovf only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.min_cpu.attribute">
+    <xs:attribute name="min_cpu" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The virtual machine min CPU count (ovf only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.max_cpu.attribute">
+    <xs:attribute name="max_cpu" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The virtual machine max CPU count (ovf only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.memory.attribute">
+    <xs:attribute name="memory" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The memory, in MB, setup for the guest VM (all formats)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.ncpus.attribute">
+    <xs:attribute name="ncpus" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The number of virtual cpus for the guest VM (all formats)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.machine.attlist">
+    <xs:attribute name="min_memory" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The virtual machine min memory in MB (ovf only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="max_memory" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The virtual machine max memory in MB (ovf only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="min_cpu" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The virtual machine min CPU count (ovf only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="max_cpu" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The virtual machine max CPU count (ovf only)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ovftype">
+      <xs:annotation>
+        <xs:documentation>The OVF configuration type</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="zvm"/>
+          <xs:enumeration value="powervm"/>
+          <xs:enumeration value="xen"/>
+          <xs:enumeration value="vmware"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="HWversion" type="xs:integer"/>
+    <xs:attribute name="arch">
+      <xs:annotation>
+        <xs:documentation>the VM architecture type (vmdk only)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="ix86"/>
+          <xs:enumeration value="x86_64"/>
+          <xs:enumeration value="%arch"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="domain">
+      <xs:annotation>
+        <xs:documentation>The domain setup for the VM (xen only)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="dom0"/>
+          <xs:enumeration value="domU"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="guestOS"/>
+    <xs:attribute name="memory" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The memory, in MB, setup for the guest VM (all formats)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ncpus" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>The number of virtual cpus for the guest VM (all formats)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="machine">
+    <xs:annotation>
+      <xs:documentation>specifies the VM configuration sections</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="vmconfig-entry"/>
+        <xs:element ref="vmdisk"/>
+        <xs:element ref="vmdvd"/>
+        <xs:element ref="vmnic"/>
+      </xs:choice>
+      <xs:attributeGroup ref="k.machine.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <packages>
+    
+  -->
+  <xs:attributeGroup name="k.packages.type.attribute">
+    <xs:attribute name="type" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="bootstrap"/>
+          <xs:enumeration value="delete"/>
+          <xs:enumeration value="image"/>
+          <xs:enumeration value="iso"/>
+          <xs:enumeration value="lxc"/>
+          <xs:enumeration value="oem"/>
+          <xs:enumeration value="pxe"/>
+          <xs:enumeration value="split"/>
+          <xs:enumeration value="testsuite"/>
+          <xs:enumeration value="vmx"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.packages.profiles.attribute">
+    <xs:attributeGroup ref="k.profiles.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.packages.patternType.attribute">
+    <xs:attribute name="patternType" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="onlyRequired"/>
+          <xs:enumeration value="plusRecommended"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.packages.attlist">
+    <xs:attributeGroup ref="k.packages.type.attribute"/>
+    <xs:attribute name="profiles">
+      <xs:annotation>
+        <xs:documentation>A profile name which binds the section to this name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="patternType">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="onlyRequired"/>
+          <xs:enumeration value="plusRecommended"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="packages">
+    <xs:annotation>
+      <xs:documentation>Specifies Packages/Patterns Used in Different Stages</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="archive"/>
+        <xs:element ref="ignore"/>
+        <xs:element ref="namedCollection"/>
+        <xs:element ref="opensuseProduct"/>
+        <xs:element ref="package"/>
+      </xs:choice>
+      <xs:attributeGroup ref="k.packages.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <preferences>
+    
+  -->
+  <xs:attributeGroup name="k.preferences.profiles.attribute">
+    <xs:attributeGroup ref="k.profiles.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.preferences.attlist">
+    <xs:attribute name="profiles">
+      <xs:annotation>
+        <xs:documentation>A profile name which binds the section to this name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="preferences">
+    <xs:annotation>
+      <xs:documentation>Configuration Information Needed for Logical Extend</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="bootsplash-theme"/>
+        <xs:element ref="bootloader-theme"/>
+        <xs:element ref="defaultdestination"/>
+        <xs:element ref="defaultprebuilt"/>
+        <xs:element ref="defaultroot"/>
+        <xs:element ref="hwclock"/>
+        <xs:element ref="keytable"/>
+        <xs:element ref="locale"/>
+        <xs:element ref="packagemanager"/>
+        <xs:element ref="rpm-check-signatures"/>
+        <xs:element ref="rpm-excludedocs"/>
+        <xs:element ref="rpm-force"/>
+        <xs:element ref="showlicense"/>
+        <xs:element ref="timezone"/>
+        <xs:element ref="type"/>
+        <xs:element ref="version"/>
+      </xs:choice>
+      <xs:attributeGroup ref="k.preferences.attlist"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <profiles>
+    
+  -->
+  <xs:element name="profiles">
+    <xs:annotation>
+      <xs:documentation>Creates Namespace Section for Drivers</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="profile"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <split>
+    
+  -->
+  <xs:element name="split">
+    <xs:annotation>
+      <xs:documentation>Describes Images in Read-Only and Read-Write Portions</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="temporary"/>
+        <xs:element ref="persistent"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <!--
+    ==========================================
+    main block: <users>
+    
+  -->
+  <xs:attributeGroup name="k.users.group.attribute">
+    <xs:attribute name="group" use="required">
+      <xs:annotation>
+        <xs:documentation>Contains the group to which the user belongs</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.users.id.attribute">
+    <xs:attribute name="id" use="required" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>Contains the group ID to which the user belongs</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.users.profiles.attribute">
+    <xs:attributeGroup ref="k.profiles.attribute"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="k.users.attlist">
+    <xs:attributeGroup ref="k.users.group.attribute"/>
+    <xs:attribute name="id" type="xs:nonNegativeInteger">
+      <xs:annotation>
+        <xs:documentation>Contains the group ID to which the user belongs</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="profiles">
+      <xs:annotation>
+        <xs:documentation>A profile name which binds the section to this name</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:element name="users">
+    <xs:annotation>
+      <xs:documentation>A List of Users</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="user"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="k.users.attlist"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+<!-- vim: set noexpandtab: -->

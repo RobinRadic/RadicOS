@@ -1,0 +1,7 @@
+# KDE Cookie File v2
+#
+# Host               Domain               Path         Exp.date   Prot Name                 Sec  Value
+[.adf.ly]
+adf.ly               ".adf.ly"            "/"          1577145000    0 __cfduid             6    d7d63c0e6fb7a8e17e0ab9019744f3de61408875138354
+adf.ly               ".adf.ly"            "/"          1409054879    0 adf1                 4    24ff32b364e9c961771afc8fc03b99fc
+adf.ly               ".adf.ly"            "/"          1409054879    0 adf2                 4    eaf31286cb4847a996e47366bfcf3de8

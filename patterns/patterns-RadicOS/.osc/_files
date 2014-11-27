@@ -1,0 +1,7 @@
+<directory name="patterns-RadicOS" rev="2" srcmd5="60c2c294d084e0e7efb6c42ab886e7f4" vrev="2">
+  <entry md5="63ec795f426c6da56e1cba2493a3d86c" mtime="1409012696" name="create_macros" size="14555" />
+  <entry md5="a921f8aaa94cd52f3dc00737add17279" mtime="1409012697" name="patterns-RadicOS-rpmlintrc" size="29" />
+  <entry md5="aa50aab2047f4d092fa1035e3aac6359" mtime="1409012697" name="patterns-RadicOS.changes" size="133671" />
+  <entry md5="d536f9ac8f7f969cdac2d470e3573a5d" mtime="1409023334" name="patterns-RadicOS.spec" size="222559" />
+  <entry md5="d33fa16aae7d89243004fb9382463136" mtime="1409023334" name="patterns.solv" size="67350" />
+</directory>

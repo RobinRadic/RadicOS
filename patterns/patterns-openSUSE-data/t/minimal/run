@@ -1,0 +1,151 @@
+#!/usr/bin/perl
+
+use strict;
+use satsolver;
+
+use Getopt::Long;
+my %options;
+Getopt::Long::Configure("no_ignore_case");
+GetOptions (
+	\%options,
+	"explain",
+	"list",
+	"size",
+	"no-recommends",
+	"arch=s",
+	"packs=s@",
+	"repo=s@",
+) or die "invalid arguments\n";
+
+$options{'repo'} = [ split(/,/, join(',', @{$options{'repo'}})) ] if $options{'repo'};
+$options{'packs'} = [ split(/,/, join(',', @{$options{'packs'}})) ] if $options{'packs'};
+$options{'size'} = 1 unless ($options{'explain'} || $options{'list'});
+
+unless ($options{'arch'}) {
+	my $arch = 'x86_64';
+	warn "--arch not specified, assuming $arch\n";
+	$options{'arch'} = $arch;
+}
+
+my $pool = new satsolver::Pool;
+$pool -> set_arch ($options{'arch'});
+
+for my $name (@{$options{'repo'}}) {
+	my $repo = $pool->create_repo($name);
+	$repo->add_solv ($name.'.solv');
+}
+
+# Create Solver
+my $solver = $pool->create_solver();
+
+# Create dependencies to provides table
+$pool->prepare();
+
+# Create Request
+my $job = $pool->create_request();
+
+for my $p (@{$options{'packs'}}) {
+	my ($n, $r) = split(/@/, $p, 2);
+	$r = $pool->find_repo($r) if $r;
+	my $pat = $pool->find($n, $r) || die "Failed to push job: $p";
+	$job->install($pat);
+}
+
+$solver->set_dont_install_recommended(1) if $options{'no-recommends'};
+# Solve the jobs
+$solver->solve($job);
+
+if ($options{'explain'}) {
+	for my $d ($solver->decisions()) {
+		printf "%s %s\n", $d->op_s(), $d->solvable()->attr_values("solvable:name");;
+		my $ri = $d->ruleinfo($job);
+		if ($ri) {
+			printf "  %s\n", $ri->string();
+		}
+	}
+}
+
+# Problems
+my $pc = $solver->problems_count();
+if ($pc) {
+    print "Found $pc problems\n";
+	my @problems = $solver->problems ($job);
+	for my $p (@problems) {
+	        my $ps = $p->string();
+		print "Problem $ps\n";
+	        my @solutions = $p->solutions();
+	        for my $s (@solutions) {
+		    my $ss = $s->string();
+		    print "  Solution $ss\n";
+		}
+	}
+	exit(1);
+}
+
+#my $t = $solver->transaction();
+#if ($t) {
+#    my $ts = $solver->transaction_string();
+#    print "Transaction $ts\n";
+#}
+#else {
+#    print "***** No transaction computed\n";
+#}
+
+sub sortbysize
+{
+	my $sa = $a->attr_values("solvable:installsize") || 0;
+	my $sb = $b->attr_values("solvable:installsize") || 0;
+	my $ret = $sa <=> $sb;
+	unless ($ret) {
+		$sa = $a->attr_values("solvable:name") || "";
+		$sb = $b->attr_values("solvable:name") || "";
+		$ret = $sa cmp $sb;
+	}
+	return $ret;
+}
+
+sub sortbyname
+{
+	my $sa = $a->attr_values("solvable:name") || "";
+	my $sb = $b->attr_values("solvable:name") || "";
+	$sa cmp $sb;
+}
+
+# Print packages to install
+my @a = $solver->installs(1);
+if ($options{'list'}) {
+	for my $solvable (sort sortbyname @a) {
+		my $name = $solvable->attr_values("solvable:name");
+		printf "%s\n", $name;
+	}
+} elsif ($options{'size'}) {
+	for my $solvable (sort sortbysize @a) {
+		my $name = $solvable->attr_values("solvable:name");
+		my $arch = $solvable->attr_values("solvable:arch");
+		my $size = $solvable->attr_values("solvable:installsize") || 0;
+		my $ver  = $solvable->attr_values("solvable:evr");
+		my $solv = $solvable->string();
+		printf "%8d %s\n", $size, $name;
+	}
+}
+
+sub getInstallSizeKBytes($) {
+	my $solver = shift;
+	my $sum    = 0;
+	my @a = $solver->installs(1);
+	for my $solvable (@a) {
+		my $size = $solvable->attr_values("solvable:installsize");
+		$sum += $size;
+	}
+	return $sum;
+}
+
+if ($options{'size'}) {
+	# get install size
+	my $size = getInstallSizeKBytes($solver);
+	printf "%8d %s\n", $size, "TOTAL";
+}
+
+# my $transaction = $solver->transaction();
+# my $sizechange = $transaction->sizechange();
+# print "SIZE CHANGE: $sizechange kB\n";

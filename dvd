@@ -1,0 +1,45 @@
+#!/bin/bash
+
+rootdir=$PWD
+
+makesuse() {
+    local temp_dvd_dir=$rootdir/installer/tmpcd
+    local iso_output_dir=$rootdir/installer/output
+    local original_iso_dir=$rootdir/installer/original-iso
+    local action=$1
+
+    if [ $action == "-i" ]; then
+        rm -rf $temp_dvd_dir
+    elif [ $action == "-C" ]; then
+        rm -rf $iso_output_dir
+    fi
+
+    makeSUSEdvd -t $temp_dvd_dir -o $iso_output_dir -d $original_iso_dir $action
+}
+
+create(){
+    cd tools
+    rm -rf $rootdir/installer/output
+    echo "Going to phing it "
+    #php phing.phar -f phing.xml create-package-list
+    php phing.phar -f phing.xml delete-unwanted-packages
+    php phing.phar -f phing.xml dvddata-to-tmpcd
+    #php phing.phar -f phing.xml tmpcd-clean-before-makedvd
+
+    echo "I phinged that shit. Going to make the SUSE dvd"
+
+    makesuse -C
+}
+
+prepare() {
+    echo "I made that shit. Going to remake the tmp directory"
+    makesuse -i
+}
+
+build() {
+    prepare
+    create
+}
+
+
+$*

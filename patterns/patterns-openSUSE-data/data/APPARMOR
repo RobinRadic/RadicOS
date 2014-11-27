@@ -1,0 +1,15 @@
++Prq:
+patterns-openSUSE-apparmor
+apparmor-parser
+apparmor-profiles
+audit
+-Prq:
+
++Prc:
+yast2-apparmor
+apparmor-utils
+-Prc:
+
++Psg:
+pam_apparmor
+-Psg:

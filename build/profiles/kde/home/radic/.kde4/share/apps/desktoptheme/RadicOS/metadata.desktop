@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=RadicOS
+Comment=
+X-KDE-PluginInfo-Author=Robin Radic
+X-KDE-PluginInfo-Email=robin@radic.nl
+X-KDE-PluginInfo-Name=RadicOS
+X-KDE-PluginInfo-Version=1.0.2
+X-KDE-PluginInfo-Website=
+X-KDE-PluginInfo-Category=Plasma Theme
+X-KDE-PluginInfo-Depends=KDE4
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+
+[Settings]
+FallbackTheme=default
+UseNativeWidgetStyle=false

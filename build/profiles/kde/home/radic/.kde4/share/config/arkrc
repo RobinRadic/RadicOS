@@ -1,0 +1,16 @@
+[MainWindow]
+Height 1080=484
+State=AAAA/wAAAAD9AAAAAAAAAoIAAAGQAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAWAG0AYQBpAG4AVABvAG8AbABCAGEAcgEAAAAA/////wAAAAAAAAAA
+ToolBarsMovable=Disabled
+Width 1920=642
+splitterSizes=328,308
+
+[Recent Files]
+File1[$e]=$HOME/Downloads/164556-Sol-KDETheme.zip
+File2[$e]=$HOME/Downloads/evolvere.tar-1.1.9.tar.gz
+Name1[$e]=164556-Sol-KDETheme.zip
+Name2[$e]=evolvere.tar-1.1.9.tar.gz
+
+[Viewer]
+Height 1080=400
+Width 1920=560

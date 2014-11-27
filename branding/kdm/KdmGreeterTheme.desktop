@@ -1,0 +1,10 @@
+# This is not really a .desktop file like the rest, but it is useful to treat
+# it as such
+
+[KdmGreeterTheme]
+Greeter=RadicOS.xml
+Name=RadicOS 13.1 Awesome KDM theme
+Description=RadicOS 13.1 KDM Theme (grow based)
+Author=RadicOS Artwork Team
+Copyright=GPL v3.0 2013 RadicOS Artwork Team
+Screenshot=screenshot.jpg

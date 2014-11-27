@@ -1,0 +1,6 @@
+[Desktop Entry]
+Icon=text-plain
+Name=plasma-desktoprc
+Type=Link
+URL[$e]=file://$HOME/.kde4/share/config/plasma-desktoprc
+X-KDE-LastOpenedWith=kate

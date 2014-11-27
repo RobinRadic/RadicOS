@@ -1,0 +1,12 @@
+Extension "EPS Input" failed to load because a dependency was not met.
+Dependency:
+  type: executable
+  location: extensions
+  string: ps2pdf-ext.py
+
+Extension "PostScript Input" failed to load because a dependency was not met.
+Dependency:
+  type: executable
+  location: extensions
+  string: ps2pdf-ext.py
+
